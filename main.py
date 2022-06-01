@@ -1,19 +1,39 @@
-import pygame
+import pygame as pg
 from pygame.locals import *
 import sys
+import config as cf
+
+pg.init()
+pg.display.set_caption('Hello, World!')
+window = pg.display.set_mode(cf.get_size())
+fps = cf.get_fps()
+running = True
+debug = True
+font = pg.font.SysFont(None, 36)
+clock = pg.time.Clock()
+
+def terminate():
+    pg.quit()
+    sys.exit()
+
+def show_fps():
+    txt = font.render(str(round(clock.get_fps())), True, pg.Color('limegreen'), pg.Color('magenta3'))
+    window.blit(txt, txt.get_rect())
+
 
 def main():
-    pygame.init()
-    window = pygame.display.set_mode((1000, 750))
-    pygame.display.set_caption('Hello, World!')
-    while True:
-        for event in pygame.event.get():
+    while running:
+        for event in pg.event.get():
             if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+                terminate()
         
-        window.fill((0, 0, 0))
-        pygame.display.update()
+        window.fill(pg.Color('black'))
+
+        if debug:
+            show_fps()
+            
+        pg.display.update()
+        clock.tick(fps)
 
 if __name__ == '__main__':
     main()
