@@ -24,7 +24,6 @@ def show_fps():
     txt = font.render(str(round(clock.get_fps())), True, pg.Color('limegreen'), pg.Color('magenta3'))
     window.blit(txt, txt.get_rect())
 
-
 def main():
     while True:
         for event in pg.event.get():
