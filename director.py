@@ -79,3 +79,6 @@ class Director:
             self.transition()
 
         self.window.blit(self.current.screen, (0, 0))
+
+        if self.current.dynamic:
+            self.current.update()

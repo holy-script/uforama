@@ -9,9 +9,10 @@ class BaseScreen:
         self.sprites = []
         self.texts = []
     
-    def create(self):
+    def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
         self.screen.fill(pg.Color(self.bg))
+        self.dynamic = dynamic
     
     def opacity(self, val):
         self.screen.set_alpha(val)
@@ -29,6 +30,7 @@ class BaseScreen:
         sprite.rect = sprite.image.get_rect()
         sprite.rect.center = pos
         self.sprites.append(sprite)
+        return sprite
     
     def add_text(self, size, pos, text, color, bg=None):
         font = pg.font.SysFont(None, size)
