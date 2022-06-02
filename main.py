@@ -2,15 +2,19 @@ import pygame as pg
 from pygame.locals import *
 import sys
 import config as cf
+from camera import BasicCamera
+from director import Director
 
 pg.init()
 pg.display.set_caption('Hello, World!')
 window = pg.display.set_mode(cf.get_size())
 fps = cf.get_fps()
-running = True
 debug = True
 font = pg.font.SysFont(None, 36)
 clock = pg.time.Clock()
+cam = BasicCamera()
+director = Director(clock, cam)
+director.startup()
 
 def terminate():
     pg.quit()
@@ -22,16 +26,28 @@ def show_fps():
 
 
 def main():
-    while running:
+    while True:
         for event in pg.event.get():
             if event.type == QUIT:
                 terminate()
+            if event.type == director.events['FADE_IN_LOGOS']:
+                director.start_screen('logos')
+            if event.type == director.events['FADE_OUT_LOGOS']:
+                director.end_screen()
+            if event.type == director.events['FADE_IN_BANNER']:
+                director.start_screen('banner')
+            if event.type == director.events['FADE_OUT_BANNER']:
+                director.end_screen()
+            if event.type == director.events['FADE_IN_MENU']:
+                director.start_screen('menu')
         
         window.fill(pg.Color('black'))
+        director.direct()
+        cam.render()
 
         if debug:
             show_fps()
-            
+
         pg.display.update()
         clock.tick(fps)
 

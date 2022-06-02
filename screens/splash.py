@@ -1,8 +1,21 @@
 import os
 from screens.base import BaseScreen
 
-def splash_screen(dimensions):
-    splash = BaseScreen(dimensions, 'orchid1', 2)
-    splash.create()
-    splash.add_sprite(os.path.join(os.path.dirname(__file__), '..', 'assets', 'pygame_logo.png'))
-    return splash
+pg_logo = os.path.join(os.path.dirname(__file__), '..', 'assets', 'pygame_logo.png')
+
+def logos(camera):
+    logos = BaseScreen('orange', 1)
+    logos.set_camera(camera)
+    logos.create()
+    logos.add_sprite(pg_logo, logos.screen.get_rect().center)
+    return logos
+
+def banner(camera):
+    banner = BaseScreen('pink', 1)
+    banner.set_camera(camera)
+    banner.create()
+    (x, y) = banner.screen.get_rect().center
+    banner.add_text(36, (x, y - 36), '-rama', 'black')
+    banner.add_text(36, (x, y), 'noun suffix:', 'black')
+    banner.add_text(36, (x, y + 36), ' meaning "sight, view, spectacular display or instance of,"', 'black')
+    return banner
