@@ -77,8 +77,8 @@ class Director:
     def direct(self):
         if self.in_transition:
             self.transition()
+        else:
+            if self.current.dynamic:
+                self.current.update()
 
         self.window.blit(self.current.screen, (0, 0))
-
-        if self.current.dynamic:
-            self.current.update()

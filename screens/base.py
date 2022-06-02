@@ -30,9 +30,10 @@ class BaseScreen:
         sprite.rect = sprite.image.get_rect()
         sprite.rect.center = pos
         self.sprites.append(sprite)
-        return sprite
+        return (sprite, len(self.sprites) - 1)
     
     def add_text(self, size, pos, text, color, bg=None):
         font = pg.font.SysFont(None, size)
         txt = font.render(text, True, pg.Color(color), None if bg is None else pg.Color(bg))
         self.texts.append((txt, pos))
+        return (txt, pos, len(self.texts) - 1)
