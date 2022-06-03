@@ -42,15 +42,29 @@ def main():
             if director.current:
                 if director.current.dynamic:
                     if director.current.evts_added:
-                        if event.type == director.events['PLAY!_CLICK']:
-                            print("Play clicked")
-                        if event.type == director.events['OPTIONS_CLICK']:
-                            print("Options clicked")
-                        if event.type == director.events['CREDITS_CLICK']:
-                            print("Credits clicked")
-                        if event.type == director.events['EXIT_CLICK']:
-                            print("Exit clicked")
-        
+                        if director.current.name == 'Menu':
+                            if event.type == director.events['PLAY!_CLICK']:
+                                director.end_screen()
+                                pg.time.set_timer(director.events['FADE_IN_PLAY!'], 1500, 1)
+                            if event.type == director.events['OPTIONS_CLICK']:
+                                director.end_screen()
+                                pg.time.set_timer(director.events['FADE_IN_OPTIONS'], 1500, 1)
+                            if event.type == director.events['CREDITS_CLICK']:
+                                director.end_screen()
+                                pg.time.set_timer(director.events['FADE_IN_CREDITS'], 1500, 1)
+                            if event.type == director.events['EXIT_CLICK']:
+                                director.end_screen()
+                                pg.time.set_timer(QUIT, 1500, 1)
+                            if event.type == director.events['FADE_IN_CREDITS']:
+                                director.start_screen('credits')
+                            if event.type == director.events['FADE_IN_OPTIONS']:
+                                director.start_screen('options')
+                            if event.type == director.events['FADE_IN_PLAY!']:
+                                director.start_screen('levels')
+                        else:
+                            if event.type == director.events['MENU_CLICK']:
+                                director.end_screen()
+                                pg.time.set_timer(director.events['FADE_IN_MENU'], 1000, 1)
         window.fill(pg.Color('black'))
         director.direct()
         cam.render()

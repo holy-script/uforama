@@ -19,6 +19,9 @@ class Director:
             "logos": splash.logos,
             "banner": splash.banner,
             "menu": home.menu,
+            "credits": home.credits,
+            "options": home.options,
+            "levels": home.lvls,
         }
         self.current = None
 

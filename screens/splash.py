@@ -4,14 +4,14 @@ from screens.base import BaseScreen
 pg_logo = os.path.join(os.path.dirname(__file__), '..', 'assets', 'pygame_logo.png')
 
 def logos(camera):
-    logos = BaseScreen('orange', 1)
+    logos = BaseScreen('Logos', 'orange', 1)
     logos.set_camera(camera)
     logos.create()
     logos.add_sprite(pg_logo, logos.screen.get_rect().center)
     return logos
 
 def banner(camera):
-    banner = BaseScreen('pink', 1)
+    banner = BaseScreen('Banner', 'pink', 1)
     banner.set_camera(camera)
     banner.create()
     (x, y) = banner.screen.get_rect().center

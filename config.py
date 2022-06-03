@@ -1,6 +1,6 @@
 config = {
-    "width": 800,
-    "height": 600,
+    "width": 720,
+    "height": 576,
     "fps": 30,
 }
 
