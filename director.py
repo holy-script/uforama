@@ -20,6 +20,7 @@ class Director:
             "banner": splash.banner,
             "menu": home.menu,
         }
+        self.current = None
 
     def make_event(self, name):
         self.evt_count += 1
@@ -80,5 +81,8 @@ class Director:
         else:
             if self.current.dynamic:
                 self.current.update()
+                if not self.current.evts_added:
+                    (self.events, self.evt_count) = self.current.evt_call(self.events, self.evt_count)
+                    self.current.evts_added = True
 
         self.window.blit(self.current.screen, (0, 0))

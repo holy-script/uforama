@@ -21,9 +21,13 @@ def menu(camera):
             f'{name}_y': center_y + y,
             f'{name}_y_active': center_y + y + 2,
             f'{name}_btn': menu.add_sprite(btn_normal, menu.screen.get_rect(centery=center_y+y).center),
-            f'{name}_txt': menu.add_text(36, menu.screen.get_rect(centery=center_y+y).center, name, 'hotpink')
+            f'{name}_txt': menu.add_text(36, menu.screen.get_rect(centery=center_y+y).center, name, 'hotpink'),
+            f'{name}_evt': f'{name.upper()}_CLICK',
+            'evt_code': -1,
+            'triggered': False
         }
     setattr(menu, 'btns', btns)
+    setattr(menu, 'evts_added', False)
 
     create_btn('Play!', -18)
     create_btn('Options', 18)
@@ -38,13 +42,13 @@ def menu(camera):
         floating_ufo[0].rect.centery = self.float_from + self.float_counter
         if self.float_up:
             if self.float_counter < self.float_limit:
-                self.float_counter += 0.5
+                self.float_counter += 1
             else:
                 self.float_counter = self.float_limit - 1
                 self.float_up = False
         else:
             if self.float_counter > 0:
-                self.float_counter -= 0.5
+                self.float_counter -= 1
             else:
                 self.float_counter = 1
                 self.float_up = True
@@ -55,9 +59,14 @@ def menu(camera):
                 if pg.mouse.get_pressed()[0]:
                     self.change_btn(btn_data[f'{name}_btn'][1], 'active')
                     btn_data[f'{name}_btn'][0].rect.centery = btn_data[f'{name}_y_active']
+                    if not btn_data['triggered']:
+                        pg.event.post(pg.event.Event(btn_data['evt_code']))
+                        btn_data['triggered'] = True
                 else:
                     self.change_btn(btn_data[f'{name}_btn'][1], 'hover')
                     btn_data[f'{name}_btn'][0].rect.centery = btn_data[f'{name}_y']
+                    if btn_data['triggered']:
+                        btn_data['triggered'] = False
                 self.change_textpos(btn_data[f'{name}_txt'][-1], btn_data[f'{name}_btn'][0].rect.center)
             else:
                 self.change_btn(btn_data[f'{name}_btn'][1], 'normal')
@@ -74,4 +83,11 @@ def menu(camera):
     def change_textpos(self, index, pos):
         self.texts[index] = (self.texts[index][0], pos)
     setattr(BaseScreen, 'change_textpos', change_textpos)
+    def evt_call(self, evts, evt_count):
+        for name in self.btns:
+            evt_count += 1
+            evts[self.btns[name][f'{name}_evt']] = evt_count
+            self.btns[name]['evt_code'] = evt_count
+        return (evts, evt_count)
+    setattr(BaseScreen, 'evt_call', evt_call)
     return menu

@@ -39,6 +39,17 @@ def main():
                 director.end_screen()
             if event.type == director.events['FADE_IN_MENU']:
                 director.start_screen('menu')
+            if director.current:
+                if director.current.dynamic:
+                    if director.current.evts_added:
+                        if event.type == director.events['PLAY!_CLICK']:
+                            print("Play clicked")
+                        if event.type == director.events['OPTIONS_CLICK']:
+                            print("Options clicked")
+                        if event.type == director.events['CREDITS_CLICK']:
+                            print("Credits clicked")
+                        if event.type == director.events['EXIT_CLICK']:
+                            print("Exit clicked")
         
         window.fill(pg.Color('black'))
         director.direct()
