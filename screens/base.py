@@ -28,11 +28,11 @@ class BaseScreen:
     def set_camera(self, camera):
         self.camera = camera
     
-    def add_sprite(self, path, pos):
+    def add_sprite(self, path, point, pos='center'):
         sprite = pg.sprite.Sprite(self.camera)
         sprite.image = pg.image.load(path)
         sprite.rect = sprite.image.get_rect()
-        sprite.rect.center = pos
+        setattr(sprite.rect, pos, point)
         self.sprites.append(sprite)
         return (sprite, len(self.sprites) - 1)
     
@@ -42,7 +42,7 @@ class BaseScreen:
         self.texts.append((txt, pos))
         return (txt, pos, len(self.texts) - 1)
 
-    def create_btn(self, name, font_size, color, x, y, def_path):
+    def create_btn(self, name, font_size, color, x, y, def_path, btn_color):
         self.btns[name] = {
             f'{name}_x': x,
             f'{name}_y': y,
@@ -51,11 +51,12 @@ class BaseScreen:
             f'{name}_txt': self.add_text(font_size, self.screen.get_rect(center=(x, y)).center, name, color),
             f'{name}_evt': f'{name.upper()}_CLICK',
             'evt_code': -1,
-            'triggered': False
+            'triggered': False,
+            'btn_color': btn_color,
         }
     
-    def change_btn(self, index, state):
-        self.sprites[index].image = self.btn_states[state]
+    def change_btn(self, index, color, state):
+        self.sprites[index].image = self.btn_states[color][state]
     
     def change_textpos(self, index, pos):
         self.texts[index] = (self.texts[index][0], pos)
@@ -74,16 +75,16 @@ class BaseScreen:
             btn_data = self.btns[name]
             if btn_data[f'{name}_btn'][0].rect.collidepoint(pg.mouse.get_pos()):
                 if pg.mouse.get_pressed()[0]:
-                    self.change_btn(btn_data[f'{name}_btn'][1], 'active')
+                    self.change_btn(btn_data[f'{name}_btn'][1], btn_data['btn_color'], 'active')
                     btn_data[f'{name}_btn'][0].rect.centery = btn_data[f'{name}_y_active']
                     if not btn_data['triggered']:
                         pg.event.post(pg.event.Event(btn_data['evt_code']))
                         btn_data['triggered'] = True
                 else:
-                    self.change_btn(btn_data[f'{name}_btn'][1], 'hover')
+                    self.change_btn(btn_data[f'{name}_btn'][1], btn_data['btn_color'], 'hover')
                     btn_data[f'{name}_btn'][0].rect.centery = btn_data[f'{name}_y']
                     if btn_data['triggered']:
                         btn_data['triggered'] = False
                 self.change_textpos(btn_data[f'{name}_txt'][-1], btn_data[f'{name}_btn'][0].rect.center)
             else:
-                self.change_btn(btn_data[f'{name}_btn'][1], 'normal')
+                self.change_btn(btn_data[f'{name}_btn'][1], btn_data['btn_color'], 'normal')

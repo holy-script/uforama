@@ -38,14 +38,14 @@ def main():
             if event.type == director.events['FADE_OUT_BANNER']:
                 director.end_screen()
             if event.type == director.events['FADE_IN_MENU']:
-                director.start_screen('menu')
+                director.start_screen('play', 1)
             if director.current:
                 if director.current.dynamic:
                     if director.current.evts_added:
                         if director.current.name == 'Menu':
-                            if event.type == director.events['PLAY!_CLICK']:
+                            if event.type == director.events['START!_CLICK']:
                                 director.end_screen()
-                                pg.time.set_timer(director.events['FADE_IN_PLAY!'], 1500, 1)
+                                pg.time.set_timer(director.events['FADE_IN_START!'], 1500, 1)
                             if event.type == director.events['OPTIONS_CLICK']:
                                 director.end_screen()
                                 pg.time.set_timer(director.events['FADE_IN_OPTIONS'], 1500, 1)
@@ -59,12 +59,22 @@ def main():
                                 director.start_screen('credits')
                             if event.type == director.events['FADE_IN_OPTIONS']:
                                 director.start_screen('options')
-                            if event.type == director.events['FADE_IN_PLAY!']:
-                                director.start_screen('levels')
+                            if event.type == director.events['FADE_IN_START!']:
+                                director.start_screen('start')
                         else:
-                            if event.type == director.events['MENU_CLICK']:
-                                director.end_screen()
-                                pg.time.set_timer(director.events['FADE_IN_MENU'], 1000, 1)
+                            # if event.type == director.events['MENU_CLICK']:
+                            #     director.end_screen()
+                            #     pg.time.set_timer(director.events['FADE_IN_MENU'], 1000, 1)
+                            if director.current.name == 'Levels':
+                                if event.type == director.events['1_CLICK']:
+                                    director.end_screen()
+                                    pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
+                                if event.type == director.events['FADE_IN_1']:
+                                    director.start_screen('play', 1)
+                            if director.current.name == 'Play':
+                                # print(director.current.player_last_x)
+                                window
+        
         window.fill(pg.Color('black'))
         director.direct()
         cam.render()

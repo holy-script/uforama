@@ -9,6 +9,9 @@ yellow_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'yel
 red_btn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'red_btn_normal.png')
 red_btn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'red_btn_hover.png')
 red_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'red_btn_active.png')
+blue_btn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_normal.png')
+blue_btn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_hover.png')
+blue_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_active.png')
 
 def menu(camera):
     menu = BaseScreen('Menu', 'black', 1.5)
@@ -17,7 +20,7 @@ def menu(camera):
 
     floating_ufo = menu.add_sprite(ufo_logo, menu.screen.get_rect().center)
 
-    menu.btn_states = {
+    menu.btn_states['yellow'] = {
         'normal': pg.image.load(yellow_btn_normal),
         'hover': pg.image.load(yellow_btn_hover),
         'active': pg.image.load(yellow_btn_active),
@@ -25,10 +28,10 @@ def menu(camera):
 
     (centerx, centery) = menu.screen.get_rect().center
 
-    menu.create_btn('Play!', 36, 'hotpink', centerx, centery - 54, yellow_btn_normal)
-    menu.create_btn('Options', 36, 'hotpink', centerx, centery + 18, yellow_btn_normal)
-    menu.create_btn('Credits', 36, 'hotpink', centerx, centery + 90, yellow_btn_normal)
-    menu.create_btn('Exit', 36, 'hotpink', centerx, centery + 162, yellow_btn_normal)
+    menu.create_btn('Start!', 36, 'hotpink', centerx, centery - 54, yellow_btn_normal, 'yellow')
+    menu.create_btn('Options', 36, 'hotpink', centerx, centery + 18, yellow_btn_normal, 'yellow')
+    menu.create_btn('Credits', 36, 'hotpink', centerx, centery + 90, yellow_btn_normal, 'yellow')
+    menu.create_btn('Exit', 36, 'hotpink', centerx, centery + 162, yellow_btn_normal, 'yellow')
     
     setattr(menu, 'float_limit', 20)
     setattr(menu, 'float_counter', 0)
@@ -88,6 +91,16 @@ def lvls(camera):
 
     create_menu_btn(lvls)
 
+    (centerx, centery) = lvls.screen.get_rect().center
+
+    lvls.create_btn('1', 36, 'black', centerx, centery, blue_btn_normal, 'blue')
+
+    lvls.btn_states['blue'] = {
+        'normal': pg.image.load(blue_btn_normal),
+        'hover': pg.image.load(blue_btn_hover),
+        'active': pg.image.load(blue_btn_active),
+    }
+
     def effects(self):
         self.handle_btn_clicks()
     setattr(BaseScreen, 'update', effects)
@@ -95,7 +108,7 @@ def lvls(camera):
     return lvls
 
 def create_menu_btn(screen):
-    screen.btn_states = {
+    screen.btn_states['red'] = {
         'normal': pg.image.load(red_btn_normal),
         'hover': pg.image.load(red_btn_hover),
         'active': pg.image.load(red_btn_active),
@@ -103,4 +116,4 @@ def create_menu_btn(screen):
 
     (topleftx, toplefty) = screen.screen.get_rect().topleft
 
-    screen.create_btn('Menu', 20, 'black', topleftx + 48, toplefty + 48, red_btn_normal)
+    screen.create_btn('Menu', 20, screen.bg, topleftx + 48, toplefty + 48, red_btn_normal, 'red')

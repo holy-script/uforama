@@ -3,6 +3,7 @@ from pygame.locals import *
 import config as cf
 import screens.splash as splash
 import screens.home as home
+import screens.game as game
 
 class Director:
     def __init__(self, clock, cam):
@@ -21,7 +22,8 @@ class Director:
             "menu": home.menu,
             "credits": home.credits,
             "options": home.options,
-            "levels": home.lvls,
+            "start": home.lvls,
+            "play": game.play,
         }
         self.current = None
 
@@ -42,9 +44,12 @@ class Director:
         # Convert the 0-1 range into a value in the right range.
         return round(rightMin + (valueScaled * rightSpan))
     
-    def start_screen(self, name):
+    def start_screen(self, name, data=None):
         self.cam.clear_camera()
-        self.current = self.screens[name](self.cam)
+        if data:
+            self.current = self.screens[name](self.cam, data)
+        else:
+            self.current = self.screens[name](self.cam)
         self.cam.set_texts(self.current.texts)
         self.threshold = self.current.count * cf.get_fps()
         self.in_transition = True
