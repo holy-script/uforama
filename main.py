@@ -72,8 +72,7 @@ def main():
                                 if event.type == director.events['FADE_IN_1']:
                                     director.start_screen('play', 1)
                             if director.current.name == 'Play':
-                                # print(director.current.player_last_x)
-                                window
+                                cam.follow_player = True
         
         window.fill(pg.Color('black'))
         director.direct()
