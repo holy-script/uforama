@@ -12,6 +12,7 @@ class BaseScreen:
         self.btns = {}
         self.evts_added = False
         self.btn_states = {}
+        self.triggers = {}
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
@@ -30,7 +31,7 @@ class BaseScreen:
     
     def add_sprite(self, path, point, pos='center'):
         sprite = pg.sprite.Sprite(self.camera)
-        sprite.image = pg.image.load(path)
+        sprite.image = pg.image.load(path).convert_alpha()
         sprite.rect = sprite.image.get_rect()
         setattr(sprite.rect, pos, point)
         self.sprites.append(sprite)
@@ -68,6 +69,10 @@ class BaseScreen:
             self.btns[name]['evt_code'] = evt_count
             evt_count += 1
             evts[f'FADE_IN_{name.upper()}'] = evt_count
+        for name in self.triggers:
+            evt_count += 1
+            evts[name] = evt_count
+            self.triggers[name] = evt_count
         return (evts, evt_count)
     
     def handle_btn_clicks(self):

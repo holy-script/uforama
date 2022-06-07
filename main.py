@@ -73,6 +73,10 @@ def main():
                                     director.start_screen('play', 1)
                             if director.current.name == 'Play':
                                 cam.follow_player = True
+                                if event.type == director.events['LOSER']:
+                                    #director.end_screen()
+                                    #lose banner
+                                    director
         
         window.fill(pg.Color('black'))
         director.direct()
