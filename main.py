@@ -2,8 +2,8 @@ import pygame as pg
 from pygame.locals import *
 import sys
 import config as cf
-from camera import BasicCamera
-from director import Director
+from classes.camera import BasicCamera
+from classes.director import Director
 
 pg.init()
 pg.display.set_caption('Hello, World!')
@@ -81,6 +81,7 @@ def main():
         window.fill(pg.Color('black'))
         director.direct()
         cam.render()
+        cam.update()
 
         if debug:
             show_fps()

@@ -10,7 +10,7 @@ class BasicCamera(pg.sprite.Group):
         self.display = pg.display.get_surface()
         self.texts = []
         self.mouse = pg.sprite.Sprite()
-        self.mouse.image = pg.image.load(os.path.join(os.path.dirname(__file__), 'assets', 'mouse_icon.png'))
+        self.mouse.image = pg.image.load(os.path.join(os.path.dirname(__file__), "..", 'assets', 'mouse_icon.png'))
         self.mouse.image = pg.transform.rotate(self.mouse.image, 30)
         self.mouse.rect = self.mouse.image.get_rect()
         pg.mouse.set_visible(False)
@@ -23,9 +23,14 @@ class BasicCamera(pg.sprite.Group):
             "left": cf.config['width'] / 8,
             "top": cf.config['height'] / 8,
         }
-        self.cam_rect = pg.Rect(self.cam_box['left'], self.cam_box['top'], self.display.get_rect().width - (2 * self.cam_box['left']), self.display.get_rect().height - (2 * self.cam_box['top']))
+        self.cam_rect = pg.Rect(
+            self.cam_box['left'], self.cam_box['top'], 
+            self.display.get_rect().width - (2 * self.cam_box['left']), self.display.get_rect().height - (2 * self.cam_box['top'])
+        )
         self.follow_player = False
         self.map_rect = pg.Rect(0, 0, 0, 0)
+        self.sprites_data = {}
+        self.order = cf.get_draw_order()
 
     def set_texts(self, texts):
         self.texts = texts
@@ -50,9 +55,23 @@ class BasicCamera(pg.sprite.Group):
         self.offset.x = self.cam_rect.left - self.cam_box['left']
         self.offset.y = self.cam_rect.top - self.cam_box['top']
 
+    def offset_sprite(self, sprite):
+        offset_pos = sprite.rect.topleft - self.offset
+        self.display.blit(sprite.image, offset_pos)
+
+    def draw_layer(self, layer):
+        if self.sprites[layer]:
+            [self.offset_sprite(sprite) for sprite in self.sprites_data[layer]]
+
+    def mouse_maker(self):
+        self.mouse.rect.center =  pg.mouse.get_pos() + pg.math.Vector2(10, 20)
+        self.display.blit(self.mouse.image, self.mouse.rect)
+
     def render(self):
         if self.follow_player:
             self.player_camera()
+        
+        # [self.draw_layer(type) for type in self.order]
 
         for (index, sprite) in enumerate(self.sprites()):
             offset_pos = sprite.rect.topleft - self.offset
@@ -61,5 +80,4 @@ class BasicCamera(pg.sprite.Group):
         for text in self.texts:
             self.display.blit(text[0], text[0].get_rect(center=text[1]))
 
-        self.mouse.rect.center =  pg.mouse.get_pos() + pg.math.Vector2(10, 20)
-        self.display.blit(self.mouse.image, self.mouse.rect)
+        self.mouse_maker()

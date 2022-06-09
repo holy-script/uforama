@@ -1,5 +1,5 @@
 import os
-from screens.base import BaseScreen
+from classes.base import BaseScreen
 import pygame as pg
 
 ufo_logo = os.path.join(os.path.dirname(__file__), '..', 'assets', 'uforama_logo.png')

@@ -1,18 +1,23 @@
 import pygame as pg
 import config as cf
+from classes.sprite import GameSprite
+from classes.sprite import BulletSprite
+from classes.sprite import PlayerSprite
 
 class BaseScreen:
     def __init__(self, name, bg='white', transition_count=3):
         self.size = cf.get_size()
         self.bg = bg
         self.count = transition_count
-        self.sprites = []
+        self.sprites = {}
         self.texts = []
         self.name = name
         self.btns = {}
         self.evts_added = False
         self.btn_states = {}
         self.triggers = {}
+        self.types = {}
+        self.pressed = {}
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
@@ -21,21 +26,26 @@ class BaseScreen:
     
     def opacity(self, val):
         self.screen.set_alpha(val)
-        for sprite in self.sprites:
-            sprite.image.set_alpha(val)
-        for text in self.texts:
-            text[0].set_alpha(val)
+        [
+            [sprite.image.set_alpha(val) for sprite in self.sprites[layer]] for layer in self.sprites
+        ]
+        [text[0].set_alpha(val) for text in self.texts]
     
     def set_camera(self, camera):
         self.camera = camera
     
-    def add_sprite(self, path, point, pos='center'):
-        sprite = pg.sprite.Sprite(self.camera)
-        sprite.image = pg.image.load(path).convert_alpha()
-        sprite.rect = sprite.image.get_rect()
-        setattr(sprite.rect, pos, point)
-        self.sprites.append(sprite)
-        return (sprite, len(self.sprites) - 1)
+    def add_sprite(self, layer, path, point, pos='center', angle=0):
+        if layer == 'bullets':
+            sprite = BulletSprite(path, self, point, pos, angle)
+        elif layer == 'player':
+            sprite = PlayerSprite(path, self, point, pos)
+        else:
+            sprite = GameSprite(path, self, point, pos)
+        if layer in self.sprites:
+            self.sprites[layer].append(sprite)
+        else:
+            self.sprites[layer] = [sprite]
+        return (sprite, 0)
     
     def add_text(self, size, pos, text, color, bg=None):
         font = pg.font.SysFont(None, size)

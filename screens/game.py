@@ -1,10 +1,11 @@
 import os
 from random import randint
-from screens.base import BaseScreen
+from classes.base import BaseScreen
 import pygame as pg
 from pygame.locals import *
 from operator import sub
 import math
+import config as cf
 
 crosshair_icon = os.path.join(os.path.dirname(__file__), '..', 'assets', 'crosshair_icon.png')
 ufo_green = os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_green.png')
@@ -31,6 +32,7 @@ station_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'station_
 shield_bad = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_bad.png')
 shield_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_good.png')
 gun_01 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_01.png')
+bullet_01 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_01.png')
 
 def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
@@ -46,6 +48,7 @@ def play(camera, lvl):
 
     setattr(play, 'level', lvl)
     controls = levels[str(lvl)](play)
+    play.pressed = pg.key.get_pressed()
 
     def effects(self):
         self.pressed = pg.key.get_pressed()
@@ -54,88 +57,66 @@ def play(camera, lvl):
     return play
 
 def level1(screen):
-    layer1 = screen.add_sprite(bg_00, (0, 0), "topleft")[0]
+    print("one")
+    layer1 = screen.add_sprite('background', bg_00, (0, 0), "topleft")[0]
 
-    layer2_a = screen.add_sprite(bg_01, (0, layer1.rect.centery), "center")[0]
-    layer2_b = screen.add_sprite(bg_01, (layer1.rect.centerx * 2, layer1.rect.centery), "center")[0]
+    layer2_a = screen.add_sprite('background', bg_01, (0, layer1.rect.centery), "center")[0]
+    layer2_b = screen.add_sprite('background', bg_01, (layer1.rect.centerx * 2, layer1.rect.centery), "center")[0]
     cloud_speed = 1
 
-    screen.add_sprite(bg_03, (0, 1200), "bottomleft")
+    screen.add_sprite('background', bg_03, (0, 1200), "bottomleft")
 
-    screen.add_sprite(tree_04, (-6, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (118, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (234, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (550, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (688, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (790, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (1300, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (1424, 1010), "bottomleft")
-    screen.add_sprite(tree_07, (1784, 1010), "bottomleft")
-    screen.add_sprite(tree_09, (394, 1010), "bottomleft")
-    screen.add_sprite(tree_02, (991, 1010), "bottomleft")
-    screen.add_sprite(tree_06, (1560, 1010), "bottomleft")
+    screen.add_sprite('background', tree_04, (-6, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (118, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (234, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (550, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (688, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (790, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (1300, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (1424, 1010), "bottomleft")
+    screen.add_sprite('background', tree_07, (1784, 1010), "bottomleft")
+    screen.add_sprite('background', tree_09, (394, 1010), "bottomleft")
+    screen.add_sprite('background', tree_02, (991, 1010), "bottomleft")
+    screen.add_sprite('background', tree_06, (1560, 1010), "bottomleft")
 
-    screen.add_sprite(flora_02, (1171, 1010), "bottomleft")
-    screen.add_sprite(flora_01, (35, 1010), "bottomleft")
-    screen.add_sprite(flora_01, (995, 1010), "bottomleft")
-    screen.add_sprite(flora_03, (568, 1010), "bottomleft")
-    screen.add_sprite(flora_03, (1598, 1010), "bottomleft")
-    screen.add_sprite(flora_04, (1704, 1010), "bottomleft")
+    screen.add_sprite('background', flora_02, (1171, 1010), "bottomleft")
+    screen.add_sprite('background', flora_01, (35, 1010), "bottomleft")
+    screen.add_sprite('background', flora_01, (995, 1010), "bottomleft")
+    screen.add_sprite('background', flora_03, (568, 1010), "bottomleft")
+    screen.add_sprite('background', flora_03, (1598, 1010), "bottomleft")
+    screen.add_sprite('background', flora_04, (1704, 1010), "bottomleft")
 
-    enemy_shield = screen.add_sprite(shield_good, (layer1.rect.centerx, 357), "center")[0]
-    enemy_base = screen.add_sprite(station_good, (layer1.rect.centerx, 357), "center")[0]
+    enemy_shield = screen.add_sprite('background', shield_good, (layer1.rect.centerx, 357), "center")[0]
+    enemy_base = screen.add_sprite('background', station_good, (layer1.rect.centerx, 357), "center")[0]
     #268 end game
 
-    enemy_patrol = screen.add_sprite(ufo_blue, (layer1.rect.centerx, 357), "center")[0]
+    enemy_patrol = screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center")[0]
     setattr(screen, 'patrol_min', enemy_base.rect.centerx - 250)
     setattr(screen, 'patrol_max', enemy_base.rect.centerx + 250)
     setattr(screen, 'patrol_speed', 10)
 
-    screen.add_sprite(bg_02, (0, 1200), "bottomleft")
+    screen.add_sprite('background', bg_02, (0, 1200), "bottomleft")
 
     (x, y) = screen.screen.get_rect().center
 
-    player_gun = screen.add_sprite(gun_01, (x, y + 41), "center")[0]
-    setattr(screen, 'gun_01_img', player_gun.image)
+    setattr(screen, 'bullet_01_img', pg.image.load(bullet_01))
 
-    (player, player_i) = screen.add_sprite(ufo_green, (x, y))
+    setattr(screen, 'shooting', False)
+
+    (player, player_i) = screen.add_sprite('player', ufo_green, (x, y))
     screen.camera.player_index = player_i
-    speed = 10
     setattr(screen, 'max_y', (layer1.rect.bottom - 60) - player.image.get_height() * 0.5)
     setattr(screen, 'min_y', (layer1.rect.top) + player.image.get_height() * 0.5)
     setattr(screen, 'max_x', (layer1.rect.right) - player.image.get_width() * 0.5)
     setattr(screen, 'min_x', (layer1.rect.left) + player.image.get_width() * 0.5)
     screen.camera.map_rect = layer1.rect
 
+    player_gun = screen.add_sprite('player', gun_01, (x, y + 41), "center")[0]
+    setattr(screen, 'gun_01_img', player_gun.image)
+
     setattr(screen, 'direction', pg.math.Vector2())
 
     def controls(self):
-        if self.pressed[K_w]:
-            self.direction.y = -1
-        elif self.pressed[K_s]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-        
-        if self.pressed[K_d]:
-            self.direction.x = 1
-        elif self.pressed[K_a]:
-            self.direction.x = -1
-        else:
-            self.direction.x = 0
-        
-        if player.rect.left < self.min_x:
-            player.rect.left = self.min_x
-        if player.rect.top < self.min_y:
-            player.rect.top = self.min_y
-        if player.rect.right > self.max_x:
-            player.rect.right = self.max_x
-        if player.rect.bottom > self.max_y:
-            player.rect.bottom = self.max_y
-        
-        player.rect.center += self.direction * speed
-        self.camera.player = player.rect
-
         player_gun.rect.center = (player.rect.centerx, player.rect.centery + 41)
 
         dx = pg.mouse.get_pos()[0] + self.camera.offset.x - player.rect.centerx
@@ -172,5 +153,12 @@ def level1(screen):
         
         enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
         #330 for good
+
+        if pg.mouse.get_pressed()[0]:
+            if not self.shooting:
+                blt = self.add_sprite('bullets', bullet_01, (player_gun.rect.center), "center", angle)[0]
+                self.shooting = True
+        else:
+            self.shooting = False
     
     return controls
