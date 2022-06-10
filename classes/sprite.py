@@ -59,7 +59,7 @@ class BulletSprite(pg.sprite.Sprite):
                 self.kill()
 
 class MineSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, parent=None):
+    def __init__(self, src, screen, point, pos, parent):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(src).convert_alpha()
@@ -67,7 +67,8 @@ class MineSprite(pg.sprite.Sprite):
         self.add(screen.camera)
         setattr(self.rect, pos, point)
         self.img_copy = self.image.copy()
-        self.angle = 0
+        self.parent = parent
+        self.angle = self.parent.angle
         self.damage = 20
 
     def hit(self, sprite):
@@ -81,11 +82,12 @@ class MineSprite(pg.sprite.Sprite):
         self.old_rect = self.rect
         self.image = pg.transform.rotozoom(self.img_copy, self.angle, 1).convert_alpha()
         self.rect = self.image.get_rect(center=self.old_rect.center)
-        
-        # enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
-        # if enemy_hit:
-        #     [self.hit(enemy) for enemy in enemy_hit]
-        #     self.kill()
+
+        player_hit = pg.sprite.spritecollide(self, self.screen.player_group, False)
+        if player_hit:
+            [self.hit(player) for player in player_hit]
+            BoomSprite(self.screen, self.rect.center)
+            self.kill()      
 
 class PlayerSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, point, pos):
@@ -144,7 +146,7 @@ class PlayerSprite(pg.sprite.Sprite):
         else:
             self.shooting = False
         
-        if self.health < 0:
+        if self.health <= 0:
             print("dead!")
 
 class GunSprite(pg.sprite.Sprite):
@@ -201,8 +203,10 @@ enemies = {
     },
     'pink': {
         'image': os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_pink.png'),
-        'gun': None,
-        'offsets': [],
+        'gun': os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_pink.png'),
+        'offsets': [
+            (0, 50)
+        ],
         'shoot': os.path.join(os.path.dirname(__file__), '..', 'assets', 'mine.png'),
         'create': MineSprite,
     },
@@ -216,7 +220,7 @@ enemies = {
 }
 
 class EnemySprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, range_x, range_y, speed, type='beige'):
+    def __init__(self, src, screen, point, pos, range_x, range_y, speed, type='pink'):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(enemies[type]['image']).convert_alpha()
