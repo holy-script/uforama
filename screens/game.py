@@ -89,7 +89,7 @@ def level1(screen):
     enemy_base = screen.add_sprite('background', station_good, (layer1.rect.centerx, 357), "center")
     #268 end game
 
-    screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
+    enemy = screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
 
     screen.add_sprite('background', bg_02, (0, 1200), "bottomleft")
 

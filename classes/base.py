@@ -1,11 +1,8 @@
 import pygame as pg
 import config as cf
 from classes.sprite import GameSprite
-from classes.sprite import BulletSprite
 from classes.sprite import PlayerSprite
-from classes.sprite import GunSprite
 from classes.sprite import EnemySprite
-from classes.sprite import MineSprite
 
 class BaseScreen:
     def __init__(self, name, bg='white', transition_count=3):
@@ -19,7 +16,6 @@ class BaseScreen:
         self.evts_added = False
         self.btn_states = {}
         self.triggers = {}
-        self.types = {}
         self.pressed = {}
         self.angle = 0
         self.enemy_group = pg.sprite.Group()
@@ -39,18 +35,13 @@ class BaseScreen:
     
     def set_camera(self, camera):
         self.camera = camera
+        self.camera.sprites_data = self.sprites
     
-    def add_sprite(self, layer, path, point, pos='center', parent=None, range_x=(-100, 100), range_y=(-100, 100), speed=(10, 0)):
-        if layer == 'bullets':
-            sprite = BulletSprite(path, self, point, pos)
-        elif layer == 'player':
+    def add_sprite(self, layer, path, point, pos='center', range_x=(-100, 100), range_y=(-100, 100), speed=(10, 0)):
+        if layer == 'player':
             sprite = PlayerSprite(path, self, point, pos)
-        elif layer == 'guns':
-            sprite = GunSprite(path, self, point, parent)
         elif layer == 'enemies':
             sprite = EnemySprite(path, self, point, pos, range_x, range_y, speed)
-        elif layer == 'bomb':
-            sprite = MineSprite(path, self, point, pos)
         else:
             sprite = GameSprite(path, self, point, pos)
         if layer in self.sprites:

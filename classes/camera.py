@@ -30,7 +30,6 @@ class BasicCamera(pg.sprite.Group):
         self.follow_player = False
         self.map_rect = pg.Rect(0, 0, 0, 0)
         self.sprites_data = {}
-        self.order = cf.get_draw_order()
 
     def set_texts(self, texts):
         self.texts = texts
@@ -55,14 +54,6 @@ class BasicCamera(pg.sprite.Group):
         self.offset.x = self.cam_rect.left - self.cam_box['left']
         self.offset.y = self.cam_rect.top - self.cam_box['top']
 
-    def offset_sprite(self, sprite):
-        offset_pos = sprite.rect.topleft - self.offset
-        self.display.blit(sprite.image, offset_pos)
-
-    def draw_layer(self, layer):
-        if self.sprites[layer]:
-            [self.offset_sprite(sprite) for sprite in self.sprites_data[layer]]
-
     def mouse_maker(self):
         self.mouse.rect.center =  pg.mouse.get_pos() + pg.math.Vector2(10, 20)
         self.display.blit(self.mouse.image, self.mouse.rect)
@@ -70,10 +61,8 @@ class BasicCamera(pg.sprite.Group):
     def render(self):
         if self.follow_player:
             self.player_camera()
-        
-        # [self.draw_layer(type) for type in self.order]
 
-        for (index, sprite) in enumerate(self.sprites()):
+        for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset
             self.display.blit(sprite.image, offset_pos)
             

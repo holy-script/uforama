@@ -111,6 +111,7 @@ class PlayerSprite(pg.sprite.Sprite):
         self.shooting = False
         self.add(self.screen.player_group)
         self.angle = 0
+        self.radius = self.gun.image.get_size()[0] / 2
     
     def update(self):
         if self.screen.pressed[K_w]:
@@ -141,7 +142,11 @@ class PlayerSprite(pg.sprite.Sprite):
 
         if pg.mouse.get_pressed()[0]:
             if not self.shooting:
-                BulletSprite(self.bullet, self.screen, self.gun.rect.center, "center", self)
+                circ = pg.math.Vector2(
+                    self.radius * math.cos(math.radians(self.angle)),
+                    -self.radius * math.sin(math.radians(self.angle))
+                )
+                BulletSprite(self.bullet, self.screen, self.gun.rect.center + circ, "center", self)
                 self.shooting = True
         else:
             self.shooting = False
@@ -241,9 +246,15 @@ class EnemySprite(pg.sprite.Sprite):
         self.type = type
         self.shooting = False
         self.angle = 0
+        if self.guns:
+            self.radius = self.guns[0].image.get_size()[0] / 2
     
     def shoot(self, gun):
-        enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center, "center", parent=self)
+        circ = pg.math.Vector2(
+            self.radius * math.cos(math.radians(self.angle)),
+            -self.radius * math.sin(math.radians(self.angle))
+        )
+        enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center + circ, "center", parent=self)
     
     def update(self):
         if self.rect.centerx > self.range_x[1] or self.rect.centerx < self.range_x[0]:
