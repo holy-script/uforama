@@ -4,7 +4,6 @@ from classes.base import BaseScreen
 import pygame as pg
 from pygame.locals import *
 from operator import sub
-import math
 import config as cf
 
 crosshair_icon = os.path.join(os.path.dirname(__file__), '..', 'assets', 'crosshair_icon.png')
@@ -91,15 +90,10 @@ def level1(screen):
     #268 end game
 
     screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
-    screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357 + 10), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
 
     screen.add_sprite('background', bg_02, (0, 1200), "bottomleft")
 
     (x, y) = screen.screen.get_rect().center
-
-    setattr(screen, 'bullet_01_img', pg.image.load(bullet_01))
-
-    setattr(screen, 'shooting', False)
 
     player = screen.add_sprite('player', ufo_green, (x, y))
     setattr(screen, 'max_y', (layer1.rect.bottom - 60) - player.image.get_height() * 0.5)
@@ -107,8 +101,6 @@ def level1(screen):
     setattr(screen, 'max_x', (layer1.rect.right) - player.image.get_width() * 0.5)
     setattr(screen, 'min_x', (layer1.rect.left) + player.image.get_width() * 0.5)
     screen.camera.map_rect = layer1.rect
-
-    player_gun = screen.add_sprite('guns', gun_01, (0, 41), parent=player)
 
     setattr(screen, 'direction', pg.math.Vector2())
 
@@ -129,16 +121,5 @@ def level1(screen):
         
         # enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
         #330 for good
-
-        if pg.mouse.get_pressed()[0]:
-            if not self.shooting:
-                self.add_sprite('bullets', bullet_01, (player_gun.rect.center), "center")
-                self.shooting = True
-        elif pg.mouse.get_pressed()[-1]:
-            if not self.shooting:
-                self.add_sprite('bomb', mine, (player_gun.rect.center), "center")
-                self.shooting = True
-        else:
-            self.shooting = False
     
     return controls

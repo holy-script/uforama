@@ -23,6 +23,7 @@ class BaseScreen:
         self.pressed = {}
         self.angle = 0
         self.enemy_group = pg.sprite.Group()
+        self.player_group = pg.sprite.GroupSingle()
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)

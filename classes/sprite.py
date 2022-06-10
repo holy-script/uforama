@@ -1,4 +1,3 @@
-from plistlib import load
 import pygame as pg
 from pygame.locals import *
 import math
@@ -20,7 +19,7 @@ class GameSprite(pg.sprite.Sprite):
         #remove from arrays
 
 class BulletSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos):
+    def __init__(self, src, screen, point, pos, parent):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(src).convert_alpha()
@@ -29,11 +28,14 @@ class BulletSprite(pg.sprite.Sprite):
         setattr(self.rect, pos, point)
         self.img_copy = self.image.copy()
         self.old_rect = self.rect
-        self.image = pg.transform.rotozoom(self.img_copy, self.screen.angle, 1).convert_alpha()
+        self.parent = parent
+        self.image = pg.transform.rotozoom(self.img_copy, self.parent.angle, 1).convert_alpha()
         self.rect = self.image.get_rect(center=self.old_rect.center)
         self.speed = 10
         self.pos = pg.math.Vector2(point)
-        self.direction = pg.math.Vector2((math.cos(math.radians(self.screen.angle)) * self.speed, -math.sin(math.radians(self.screen.angle)) * self.speed))
+        self.direction = pg.math.Vector2(
+            (math.cos(math.radians(self.parent.angle)) * self.speed, -math.sin(math.radians(self.parent.angle)) * self.speed)
+        )
         self.damage = 10
 
     def hit(self, sprite):
@@ -45,22 +47,68 @@ class BulletSprite(pg.sprite.Sprite):
         if not self.screen.camera.map_rect.collidepoint(self.rect.center):
             self.kill()
         
-        enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
-        if enemy_hit:
-            [self.hit(enemy) for enemy in enemy_hit]
-            self.kill()
+        if self.parent == self.screen.camera.player:
+            enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
+            if enemy_hit:
+                [self.hit(enemy) for enemy in enemy_hit]
+                self.kill()
+        else:
+            player_hit = pg.sprite.spritecollide(self, self.screen.player_group, False)
+            if player_hit:
+                [self.hit(player) for player in player_hit]
+                self.kill()
 
-class PlayerSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos):
+class MineSprite(pg.sprite.Sprite):
+    def __init__(self, src, screen, point, pos, parent=None):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(src).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
         setattr(self.rect, pos, point)
-        self.image = pg.image.load(src).convert_alpha()
+        self.img_copy = self.image.copy()
+        self.angle = 0
+        self.damage = 20
+
+    def hit(self, sprite):
+        sprite.health -= self.damage
+
+    def update(self):
+        self.angle += 1
+        if self.angle >= 360:
+            self.angle = 0
+
+        self.old_rect = self.rect
+        self.image = pg.transform.rotozoom(self.img_copy, self.angle, 1).convert_alpha()
+        self.rect = self.image.get_rect(center=self.old_rect.center)
+        
+        # enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
+        # if enemy_hit:
+        #     [self.hit(enemy) for enemy in enemy_hit]
+        #     self.kill()
+
+class PlayerSprite(pg.sprite.Sprite):
+    def __init__(self, src, screen, point, pos):
+        super().__init__()
+        self.screen = screen
+        self.image = pg.image.load(
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_green.png')
+        ).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.add(screen.camera)
+        setattr(self.rect, pos, point)
         self.speed = 10
         self.health = 100
+        self.gun = GunSprite(
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_green.png'),
+            self.screen,
+            (0, 41),
+            self
+        )
+        self.bullet = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_green.png')
+        self.shooting = False
+        self.add(self.screen.player_group)
+        self.angle = 0
     
     def update(self):
         if self.screen.pressed[K_w]:
@@ -89,6 +137,16 @@ class PlayerSprite(pg.sprite.Sprite):
         self.rect.center += self.screen.direction * self.speed
         self.screen.camera.player = self.rect
 
+        if pg.mouse.get_pressed()[0]:
+            if not self.shooting:
+                BulletSprite(self.bullet, self.screen, self.gun.rect.center, "center", self)
+                self.shooting = True
+        else:
+            self.shooting = False
+        
+        if self.health < 0:
+            print("dead!")
+
 class GunSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, offset, parent, damage=10):
         super().__init__()
@@ -105,32 +163,83 @@ class GunSprite(pg.sprite.Sprite):
     def update(self):
         self.rect.center = self.parent.rect.center + pg.math.Vector2(self.offset)
 
-        dx = pg.mouse.get_pos()[0] + self.screen.camera.offset.x - self.rect.centerx
-        dy = pg.mouse.get_pos()[1] + self.screen.camera.offset.y - self.rect.centery + 41
+        if self.parent == self.screen.camera.player:
+            dx = pg.mouse.get_pos()[0] + self.screen.camera.offset.x - self.rect.centerx
+            dy = pg.mouse.get_pos()[1] + self.screen.camera.offset.y - self.rect.centery
+        else:
+            dx = self.screen.camera.player.center[0] - self.rect.centerx
+            dy = self.screen.camera.player.center[1] - self.rect.centery
+
         rad = math.atan2(-dy, dx)
         rad %= 2*math.pi
         angle = math.degrees(rad)
-        self.screen.angle = angle
+        self.parent.angle = angle
 
         self.old_rect = self.rect
         self.image = pg.transform.rotozoom(self.img_copy, angle, 1).convert_alpha()
         self.rect = self.image.get_rect(center=self.old_rect.center)
 
+enemies = {
+    'yellow': {
+        'image': os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_yellow.png'),
+        'gun': os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_yellow.png'),
+        'offsets': [
+            (0, 34)
+        ],
+        'shoot': os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_yellow.png'),
+        'create': BulletSprite,
+    },
+    'beige': {
+        'image': os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_beige.png'),
+        'gun': os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_beige.png'),
+        'offsets': [
+            (-25, 43),
+            (25, 43)
+        ],
+        'shoot': os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_beige.png'),
+        'create': BulletSprite,
+    },
+    'pink': {
+        'image': os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_pink.png'),
+        'gun': None,
+        'offsets': [],
+        'shoot': os.path.join(os.path.dirname(__file__), '..', 'assets', 'mine.png'),
+        'create': MineSprite,
+    },
+    'blue': {
+        'image': os.path.join(os.path.dirname(__file__), '..', 'assets', 'ufo_blue.png'),
+        'gun': None,
+        'offsets': [],
+        'shoot': None,
+        'create': None,
+    },
+}
+
 class EnemySprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, range_x, range_y, speed):
+    def __init__(self, src, screen, point, pos, range_x, range_y, speed, type='beige'):
         super().__init__()
         self.screen = screen
-        self.image = pg.image.load(src).convert_alpha()
+        self.image = pg.image.load(enemies[type]['image']).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
         setattr(self.rect, pos, point)
-        self.image = pg.image.load(src).convert_alpha()
         self.speed = 10
         self.health = 100
         self.range_x = range_x
         self.range_y = range_y
         self.speed = pg.math.Vector2(speed)
         self.add(self.screen.enemy_group)
+        self.guns = [
+            GunSprite(enemies[type]['gun'], self.screen, offset, self) 
+            for offset in enemies[type]['offsets'] 
+            if offset
+        ]
+        self.type = type
+        self.shooting = False
+        self.angle = 0
+    
+    def shoot(self, gun):
+        enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center, "center", parent=self)
     
     def update(self):
         if self.rect.centerx > self.range_x[1] or self.rect.centerx < self.range_x[0]:
@@ -147,7 +256,15 @@ class EnemySprite(pg.sprite.Sprite):
         
         if self.health <= 0:
             PoofSprite(self.screen, self.rect.center)
+            [gun.kill() for gun in self.guns]
             self.kill()
+        
+        if pg.mouse.get_pressed()[-1]:
+            if not self.shooting:
+                [self.shoot(gun) for gun in self.guns]
+                self.shooting = True
+        else:
+            self.shooting = False
 
 class PoofSprite(pg.sprite.Sprite):
     def __init__(self, screen, point):
@@ -229,32 +346,3 @@ class BoomSprite(pg.sprite.Sprite):
             self.frames.append(self.frames.pop(0))
             self.counter = 0
             self.frame_counter += 1
-
-class MineSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos):
-        super().__init__()
-        self.screen = screen
-        self.image = pg.image.load(src).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.add(screen.camera)
-        setattr(self.rect, pos, point)
-        self.img_copy = self.image.copy()
-        self.angle = 0
-        self.damage = 20
-
-    def hit(self, sprite):
-        sprite.health -= self.damage
-
-    def update(self):
-        self.angle += 1
-        if self.angle >= 360:
-            self.angle = 0
-
-        self.old_rect = self.rect
-        self.image = pg.transform.rotozoom(self.img_copy, self.angle, 1).convert_alpha()
-        self.rect = self.image.get_rect(center=self.old_rect.center)
-        
-        # enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
-        # if enemy_hit:
-        #     [self.hit(enemy) for enemy in enemy_hit]
-        #     self.kill()
