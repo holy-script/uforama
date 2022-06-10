@@ -1,6 +1,9 @@
+from plistlib import load
 import pygame as pg
 from pygame.locals import *
 import math
+import os
+import config as cf
 
 class GameSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, point, pos, keepcopy=False):
@@ -31,11 +34,20 @@ class BulletSprite(pg.sprite.Sprite):
         self.speed = 10
         self.pos = pg.math.Vector2(point)
         self.direction = pg.math.Vector2((math.cos(math.radians(self.screen.angle)) * self.speed, -math.sin(math.radians(self.screen.angle)) * self.speed))
+        self.damage = 10
+
+    def hit(self, sprite):
+        sprite.health -= self.damage
 
     def update(self):
         self.pos += self.direction
         self.rect.center = self.pos
         if not self.screen.camera.map_rect.collidepoint(self.rect.center):
+            self.kill()
+        
+        enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
+        if enemy_hit:
+            [self.hit(enemy) for enemy in enemy_hit]
             self.kill()
 
 class PlayerSprite(pg.sprite.Sprite):
@@ -118,6 +130,7 @@ class EnemySprite(pg.sprite.Sprite):
         self.range_x = range_x
         self.range_y = range_y
         self.speed = pg.math.Vector2(speed)
+        self.add(self.screen.enemy_group)
     
     def update(self):
         if self.rect.centerx > self.range_x[1] or self.rect.centerx < self.range_x[0]:
@@ -131,3 +144,117 @@ class EnemySprite(pg.sprite.Sprite):
             self.speed.y *= -1
         else:
             self.rect.centery += self.speed.y
+        
+        if self.health <= 0:
+            PoofSprite(self.screen, self.rect.center)
+            self.kill()
+
+class PoofSprite(pg.sprite.Sprite):
+    def __init__(self, screen, point):
+        super().__init__()
+        self.src = [
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_0.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_1.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_2.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_3.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_4.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_5.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_6.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_7.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'poof_8.png'),
+        ]
+        self.src.reverse()
+        self.frames = []
+        [self.frames.append(pg.image.load(frame).convert_alpha()) for frame in self.src]
+        self.frame_duration = 0.75 * cf.get_fps() / len(self.frames)
+        self.frame_counter = 1
+        self.counter = 0
+        self.screen = screen
+        self.point = point
+        self.image = self.frames[0]
+        self.rect = self.frames[0].get_rect(center=self.point)
+        self.add(self.screen.camera)
+    
+    def update(self):
+        self.image = self.frames[0]
+        self.rect = self.frames[0].get_rect(center=self.point)
+        self.counter += 1
+
+        if self.frame_counter >= len(self.frames):
+            self.kill()
+
+        if self.counter >= self.frame_duration:
+            self.frames.append(self.frames.pop(0))
+            self.counter = 0
+            self.frame_counter += 1
+
+class BoomSprite(pg.sprite.Sprite):
+    def __init__(self, screen, point):
+        super().__init__()
+        self.src = [
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_00.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_01.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_02.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_03.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_04.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_05.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_06.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_07.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_08.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_09.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_10.png'),
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_11.png'),
+        ]
+        self.src.reverse()
+        self.frames = []
+        [self.frames.append(pg.image.load(frame).convert_alpha()) for frame in self.src]
+        self.frame_duration = 1 * cf.get_fps() / len(self.frames)
+        self.frame_counter = 1
+        self.counter = 0
+        self.screen = screen
+        self.point = point
+        self.image = self.frames[0]
+        self.rect = self.frames[0].get_rect(center=self.point)
+        self.add(self.screen.camera)
+    
+    def update(self):
+        self.image = self.frames[0]
+        self.rect = self.frames[0].get_rect(center=self.point)
+        self.counter += 1
+
+        if self.frame_counter >= len(self.frames):
+            self.kill()
+
+        if self.counter >= self.frame_duration:
+            self.frames.append(self.frames.pop(0))
+            self.counter = 0
+            self.frame_counter += 1
+
+class MineSprite(pg.sprite.Sprite):
+    def __init__(self, src, screen, point, pos):
+        super().__init__()
+        self.screen = screen
+        self.image = pg.image.load(src).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.add(screen.camera)
+        setattr(self.rect, pos, point)
+        self.img_copy = self.image.copy()
+        self.angle = 0
+        self.damage = 20
+
+    def hit(self, sprite):
+        sprite.health -= self.damage
+
+    def update(self):
+        self.angle += 1
+        if self.angle >= 360:
+            self.angle = 0
+
+        self.old_rect = self.rect
+        self.image = pg.transform.rotozoom(self.img_copy, self.angle, 1).convert_alpha()
+        self.rect = self.image.get_rect(center=self.old_rect.center)
+        
+        # enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
+        # if enemy_hit:
+        #     [self.hit(enemy) for enemy in enemy_hit]
+        #     self.kill()

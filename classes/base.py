@@ -5,6 +5,7 @@ from classes.sprite import BulletSprite
 from classes.sprite import PlayerSprite
 from classes.sprite import GunSprite
 from classes.sprite import EnemySprite
+from classes.sprite import MineSprite
 
 class BaseScreen:
     def __init__(self, name, bg='white', transition_count=3):
@@ -21,6 +22,7 @@ class BaseScreen:
         self.types = {}
         self.pressed = {}
         self.angle = 0
+        self.enemy_group = pg.sprite.Group()
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
@@ -46,6 +48,8 @@ class BaseScreen:
             sprite = GunSprite(path, self, point, parent)
         elif layer == 'enemies':
             sprite = EnemySprite(path, self, point, pos, range_x, range_y, speed)
+        elif layer == 'bomb':
+            sprite = MineSprite(path, self, point, pos)
         else:
             sprite = GameSprite(path, self, point, pos)
         if layer in self.sprites:

@@ -33,6 +33,7 @@ shield_bad = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_bad
 shield_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_good.png')
 gun_01 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_01.png')
 bullet_01 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_01.png')
+mine = os.path.join(os.path.dirname(__file__), '..', 'assets', 'mine.png')
 
 def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
@@ -89,7 +90,8 @@ def level1(screen):
     enemy_base = screen.add_sprite('background', station_good, (layer1.rect.centerx, 357), "center")
     #268 end game
 
-    enemy_patrol = screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
+    screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
+    screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357 + 10), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
 
     screen.add_sprite('background', bg_02, (0, 1200), "bottomleft")
 
@@ -131,6 +133,10 @@ def level1(screen):
         if pg.mouse.get_pressed()[0]:
             if not self.shooting:
                 self.add_sprite('bullets', bullet_01, (player_gun.rect.center), "center")
+                self.shooting = True
+        elif pg.mouse.get_pressed()[-1]:
+            if not self.shooting:
+                self.add_sprite('bomb', mine, (player_gun.rect.center), "center")
                 self.shooting = True
         else:
             self.shooting = False
