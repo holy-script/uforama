@@ -57,11 +57,10 @@ def play(camera, lvl):
     return play
 
 def level1(screen):
-    print("one")
-    layer1 = screen.add_sprite('background', bg_00, (0, 0), "topleft")[0]
+    layer1 = screen.add_sprite('background', bg_00, (0, 0), "topleft")
 
-    layer2_a = screen.add_sprite('background', bg_01, (0, layer1.rect.centery), "center")[0]
-    layer2_b = screen.add_sprite('background', bg_01, (layer1.rect.centerx * 2, layer1.rect.centery), "center")[0]
+    layer2_a = screen.add_sprite('background', bg_01, (0, layer1.rect.centery), "center")
+    layer2_b = screen.add_sprite('background', bg_01, (layer1.rect.centerx * 2, layer1.rect.centery), "center")
     cloud_speed = 1
 
     screen.add_sprite('background', bg_03, (0, 1200), "bottomleft")
@@ -86,14 +85,11 @@ def level1(screen):
     screen.add_sprite('background', flora_03, (1598, 1010), "bottomleft")
     screen.add_sprite('background', flora_04, (1704, 1010), "bottomleft")
 
-    enemy_shield = screen.add_sprite('background', shield_good, (layer1.rect.centerx, 357), "center")[0]
-    enemy_base = screen.add_sprite('background', station_good, (layer1.rect.centerx, 357), "center")[0]
+    enemy_shield = screen.add_sprite('background', shield_good, (layer1.rect.centerx, 357), "center")
+    enemy_base = screen.add_sprite('background', station_good, (layer1.rect.centerx, 357), "center")
     #268 end game
 
-    enemy_patrol = screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center")[0]
-    setattr(screen, 'patrol_min', enemy_base.rect.centerx - 250)
-    setattr(screen, 'patrol_max', enemy_base.rect.centerx + 250)
-    setattr(screen, 'patrol_speed', 10)
+    enemy_patrol = screen.add_sprite('enemies', ufo_blue, (layer1.rect.centerx, 357), "center", range_x=(enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), range_y=(enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), speed=(10, 5))
 
     screen.add_sprite('background', bg_02, (0, 1200), "bottomleft")
 
@@ -103,30 +99,18 @@ def level1(screen):
 
     setattr(screen, 'shooting', False)
 
-    (player, player_i) = screen.add_sprite('player', ufo_green, (x, y))
-    screen.camera.player_index = player_i
+    player = screen.add_sprite('player', ufo_green, (x, y))
     setattr(screen, 'max_y', (layer1.rect.bottom - 60) - player.image.get_height() * 0.5)
     setattr(screen, 'min_y', (layer1.rect.top) + player.image.get_height() * 0.5)
     setattr(screen, 'max_x', (layer1.rect.right) - player.image.get_width() * 0.5)
     setattr(screen, 'min_x', (layer1.rect.left) + player.image.get_width() * 0.5)
     screen.camera.map_rect = layer1.rect
 
-    player_gun = screen.add_sprite('player', gun_01, (x, y + 41), "center")[0]
-    setattr(screen, 'gun_01_img', player_gun.image)
+    player_gun = screen.add_sprite('guns', gun_01, (0, 41), parent=player)
 
     setattr(screen, 'direction', pg.math.Vector2())
 
     def controls(self):
-        player_gun.rect.center = (player.rect.centerx, player.rect.centery + 41)
-
-        dx = pg.mouse.get_pos()[0] + self.camera.offset.x - player.rect.centerx
-        dy = pg.mouse.get_pos()[1] + self.camera.offset.y - player.rect.centery + 41
-        rad = math.atan2(-dy, dx)
-        rad %= 2*math.pi
-        angle = math.degrees(rad)
-        old_rect = player_gun.rect
-        player_gun.image = pg.transform.rotozoom(self.gun_01_img, angle, 1).convert_alpha()
-        player_gun.rect = player_gun.image.get_rect(center=old_rect.center)
 
         layer2_a.rect.x -= cloud_speed
         if layer2_a.rect.x < -layer1.rect.width:
@@ -141,22 +125,12 @@ def level1(screen):
         else:
             pg.event.post(pg.event.Event(self.triggers['LOSER']))
         
-        if enemy_patrol.rect.centerx < self.patrol_max:
-            enemy_patrol.rect.centerx += self.patrol_speed
-        else:
-            enemy_patrol.rect.centerx -= self.patrol_speed
-            self.patrol_speed *= -1
-        
-        if enemy_patrol.rect.centerx < self.patrol_min:
-            enemy_patrol.rect.centerx -= self.patrol_speed
-            self.patrol_speed *= -1
-        
-        enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
+        # enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
         #330 for good
 
         if pg.mouse.get_pressed()[0]:
             if not self.shooting:
-                blt = self.add_sprite('bullets', bullet_01, (player_gun.rect.center), "center", angle)[0]
+                self.add_sprite('bullets', bullet_01, (player_gun.rect.center), "center")
                 self.shooting = True
         else:
             self.shooting = False

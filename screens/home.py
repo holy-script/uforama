@@ -36,9 +36,9 @@ def menu(camera):
     setattr(menu, 'float_limit', 20)
     setattr(menu, 'float_counter', 0)
     setattr(menu, 'float_up', True)
-    setattr(menu, 'float_from', floating_ufo[0].rect.centery)
+    setattr(menu, 'float_from', floating_ufo.rect.centery)
     def effects(self):
-        floating_ufo[0].rect.centery = self.float_from + self.float_counter
+        floating_ufo.rect.centery = self.float_from + self.float_counter
         if self.float_up:
             if self.float_counter < self.float_limit:
                 self.float_counter += 1

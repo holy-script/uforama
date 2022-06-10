@@ -3,6 +3,8 @@ import config as cf
 from classes.sprite import GameSprite
 from classes.sprite import BulletSprite
 from classes.sprite import PlayerSprite
+from classes.sprite import GunSprite
+from classes.sprite import EnemySprite
 
 class BaseScreen:
     def __init__(self, name, bg='white', transition_count=3):
@@ -18,6 +20,7 @@ class BaseScreen:
         self.triggers = {}
         self.types = {}
         self.pressed = {}
+        self.angle = 0
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
@@ -34,18 +37,22 @@ class BaseScreen:
     def set_camera(self, camera):
         self.camera = camera
     
-    def add_sprite(self, layer, path, point, pos='center', angle=0):
+    def add_sprite(self, layer, path, point, pos='center', parent=None, range_x=(-100, 100), range_y=(-100, 100), speed=(10, 0)):
         if layer == 'bullets':
-            sprite = BulletSprite(path, self, point, pos, angle)
+            sprite = BulletSprite(path, self, point, pos)
         elif layer == 'player':
             sprite = PlayerSprite(path, self, point, pos)
+        elif layer == 'guns':
+            sprite = GunSprite(path, self, point, parent)
+        elif layer == 'enemies':
+            sprite = EnemySprite(path, self, point, pos, range_x, range_y, speed)
         else:
             sprite = GameSprite(path, self, point, pos)
         if layer in self.sprites:
             self.sprites[layer].append(sprite)
         else:
             self.sprites[layer] = [sprite]
-        return (sprite, 0)
+        return sprite
     
     def add_text(self, size, pos, text, color, bg=None):
         font = pg.font.SysFont(None, size)
