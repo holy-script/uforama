@@ -15,6 +15,12 @@ config = {
         "pink": (2, 4), # (4, 8)
         "blue": (2, 4), # (4, 8)
     },
+    "firerate": {
+        "yellow": 3,
+        "beige": 2,
+        "pink": 5,
+        "blue": -1,
+    }
 }
 
 def get_size():
@@ -44,3 +50,6 @@ def set_speed_enemies(yellow, beige, pink):
     config['speed']['yellow'] = yellow
     config['speed']['beige'] = beige
     config['speed']['pink'] = pink
+
+def get_firerate(type):
+    return config['firerate'][type]

@@ -100,8 +100,6 @@ def level1(screen):
     player_shield = screen.add_sprite(shield_good, (layer1.rect.centerx, 0), "midbottom")
     player_base = screen.add_sprite(station_good, (layer1.rect.centerx, 0), "midbottom")
 
-    #268 end game
-
     enemy_patrol = EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
@@ -239,6 +237,5 @@ def level1(screen):
             pg.event.post(pg.event.Event(self.triggers['LOSER']))
         
         enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
-        #330 for good
     
     return controls

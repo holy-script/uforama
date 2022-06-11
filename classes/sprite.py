@@ -3,6 +3,7 @@ from pygame.locals import *
 import math
 import os
 import config as cf
+import random
 
 class GameSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, point, pos, sticky, btn=False):
@@ -290,6 +291,8 @@ class EnemySprite(pg.sprite.Sprite):
         if self.guns:
             self.radius = self.guns[0].image.get_size()[0] / 2
         self.zoom = 1
+        self.counter = 0
+        self.threshold = cf.get_firerate(self.type) * cf.get_fps()
     
     def shoot(self, gun):
         circ = pg.math.Vector2(
@@ -315,15 +318,22 @@ class EnemySprite(pg.sprite.Sprite):
             self.rect.centery += self.speed.y
         
         if self.health <= 0:
-            PowerupSprite(self.screen, self.rect.center, 'slow')
+            PowerupSprite(
+                self.screen, 
+                self.rect.center, 
+                random.choice(['shield', 'slow', 'rocket'])
+            )
             PoofSprite(self.screen, self.rect.center)
             [gun.kill() for gun in self.guns]
             self.kill()
         
-        if pg.mouse.get_pressed()[-1]:
+        self.counter += 1
+
+        if self.counter >= self.threshold and self.threshold > 0:
             if not self.shooting:
                 [self.shoot(gun) for gun in self.guns]
                 self.shooting = True
+                self.counter = 0
         else:
             self.shooting = False
 
@@ -432,6 +442,11 @@ class PowerupSprite(pg.sprite.Sprite):
 
         # Convert the 0-1 range into a value in the right range.
         return round(rightMin + (valueScaled * rightSpan))
+
+    def add_health(self, player):
+        player.health += 10
+        if player.health > 100:
+            player.health = 100
     
     def update(self):
         self.counter += 1
@@ -446,4 +461,5 @@ class PowerupSprite(pg.sprite.Sprite):
         player_take = pg.sprite.spritecollide(self, self.screen.player_group, False)
         if player_take:
             powerups[self.type]['effect'](self.screen)
+            [self.add_health(player) for player in player_take]
             self.kill()
