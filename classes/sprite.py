@@ -90,7 +90,7 @@ class MineSprite(pg.sprite.Sprite):
             self.kill()      
 
 class PlayerSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos):
+    def __init__(self, screen, point):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(
@@ -98,7 +98,7 @@ class PlayerSprite(pg.sprite.Sprite):
         ).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
-        setattr(self.rect, pos, point)
+        setattr(self.rect, "center", point)
         self.speed = 10
         self.health = 100
         self.gun = GunSprite(
@@ -225,13 +225,13 @@ enemies = {
 }
 
 class EnemySprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, range_x, range_y, speed, type='pink'):
+    def __init__(self, screen, point, type, range_x, range_y, speed):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(enemies[type]['image']).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
-        setattr(self.rect, pos, point)
+        setattr(self.rect, "center", point)
         self.speed = 10
         self.health = 100
         self.range_x = range_x

@@ -1,15 +1,12 @@
 import pygame as pg
 import config as cf
 from classes.sprite import GameSprite
-from classes.sprite import PlayerSprite
-from classes.sprite import EnemySprite
 
 class BaseScreen:
     def __init__(self, name, bg='white', transition_count=3):
         self.size = cf.get_size()
         self.bg = bg
         self.count = transition_count
-        self.sprites = {}
         self.texts = []
         self.name = name
         self.btns = {}
@@ -28,26 +25,14 @@ class BaseScreen:
     
     def opacity(self, val):
         self.screen.set_alpha(val)
-        [
-            [sprite.image.set_alpha(val) for sprite in self.sprites[layer]] for layer in self.sprites
-        ]
+        [sprite.image.set_alpha(val) for sprite in self.camera.sprites()]
         [text[0].set_alpha(val) for text in self.texts]
     
     def set_camera(self, camera):
         self.camera = camera
-        self.camera.sprites_data = self.sprites
     
-    def add_sprite(self, layer, path, point, pos='center', range_x=(-100, 100), range_y=(-100, 100), speed=(10, 0)):
-        if layer == 'player':
-            sprite = PlayerSprite(path, self, point, pos)
-        elif layer == 'enemies':
-            sprite = EnemySprite(path, self, point, pos, range_x, range_y, speed)
-        else:
-            sprite = GameSprite(path, self, point, pos)
-        if layer in self.sprites:
-            self.sprites[layer].append(sprite)
-        else:
-            self.sprites[layer] = [sprite]
+    def add_sprite(self, path, point, pos='center'):
+        sprite = GameSprite(path, self, point, pos)
         return sprite
     
     def add_text(self, size, pos, text, color, bg=None):
