@@ -29,7 +29,6 @@ class BasicCamera(pg.sprite.Group):
         )
         self.follow_player = False
         self.map_rect = pg.Rect(0, 0, 0, 0)
-        self.sprites_data = {}
 
     def set_texts(self, texts):
         self.texts = texts
@@ -58,15 +57,22 @@ class BasicCamera(pg.sprite.Group):
         self.mouse.rect.center =  pg.mouse.get_pos() + pg.math.Vector2(10, 20)
         self.display.blit(self.mouse.image, self.mouse.rect)
 
+    def offset_draw(self, sprite):
+        offset_pos = sprite.rect.topleft - self.offset
+        if hasattr(sprite, 'cropped'):
+            if sprite.cropped:
+                self.display.blit(sprite.image, sprite.point, sprite.crop_area)
+            else:
+                self.display.blit(sprite.image, offset_pos)
+        else:
+            self.display.blit(sprite.image, offset_pos)
+
     def render(self):
+        [self.offset_draw(sprite) for sprite in self.sprites()]
+            
         if self.follow_player:
             self.player_camera()
-
-        for sprite in self.sprites():
-            offset_pos = sprite.rect.topleft - self.offset
-            self.display.blit(sprite.image, offset_pos)
             
-        for text in self.texts:
-            self.display.blit(text[0], text[0].get_rect(center=text[1]))
+        [self.display.blit(text[0], text[0].get_rect(center=text[1])) for text in self.texts]
 
         self.mouse_maker()

@@ -5,18 +5,27 @@ import os
 import config as cf
 
 class GameSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, keepcopy=False):
+    def __init__(self, src, screen, point, pos, sticky):
         super().__init__()
         self.image = pg.image.load(src).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
-        setattr(self.rect, pos, point)
-        if keepcopy:
-            self.img_copy = self.image.copy()
+        setattr(self.rect, pos, screen.camera.offset + point)
+        self.pos = pos
+        self.point = point
+        self.sticky = sticky
+        self.screen = screen
+        self.cropped = False
+        self.crop_area = pg.rect.Rect(0, 0, 0, 0)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
     
+    def update(self):
+        if self.sticky:
+            setattr(self.rect, self.pos, self.screen.camera.offset + self.point)
+
     def destroy(self):
         self.kill()
-        #remove from arrays
 
 class BulletSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, point, pos, parent):

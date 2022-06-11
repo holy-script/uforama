@@ -29,6 +29,8 @@ station_bad = os.path.join(os.path.dirname(__file__), '..', 'assets', 'station_b
 station_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'station_good.png')
 shield_bad = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_bad.png')
 shield_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_good.png')
+health_bar = os.path.join(os.path.dirname(__file__), '..', 'assets', 'health_bar.png')
+health_val = os.path.join(os.path.dirname(__file__), '..', 'assets', 'health_val.png')
 
 def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
@@ -107,7 +109,12 @@ def level1(screen):
 
     setattr(screen, 'direction', pg.math.Vector2())
 
+    hv = screen.add_sprite(health_val, pg.math.Vector2(29, 32), "topleft", True)
+    hv.cropped = True
+    screen.add_sprite(health_bar, pg.math.Vector2(20, 20), "topleft", True)
+
     def controls(self):
+        hv.crop_area = hv.image.get_rect(width=screen.translate(player.health, 0, 100, 0, hv.width))
 
         layer2_a.rect.x -= cloud_speed
         if layer2_a.rect.x < -layer1.rect.width:

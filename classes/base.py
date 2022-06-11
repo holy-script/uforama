@@ -31,8 +31,8 @@ class BaseScreen:
     def set_camera(self, camera):
         self.camera = camera
     
-    def add_sprite(self, path, point, pos='center'):
-        sprite = GameSprite(path, self, point, pos)
+    def add_sprite(self, path, point, pos='center', sticky=False):
+        sprite = GameSprite(path, self, point, pos, sticky)
         return sprite
     
     def add_text(self, size, pos, text, color, bg=None):
@@ -91,3 +91,15 @@ class BaseScreen:
                 self.change_textpos(btn_data[f'{name}_txt'][-1], btn_data[f'{name}_btn'][0].rect.center)
             else:
                 self.change_btn(btn_data[f'{name}_btn'][1], btn_data['btn_color'], 'normal')
+
+    @staticmethod
+    def translate(value, leftMin, leftMax, rightMin, rightMax):
+        # Figure out how 'wide' each range is
+        leftSpan = leftMax - leftMin
+        rightSpan = rightMax - rightMin
+
+        # Convert the left range into a 0-1 range (float)
+        valueScaled = float(value - leftMin) / float(leftSpan)
+
+        # Convert the 0-1 range into a value in the right range.
+        return round(rightMin + (valueScaled * rightSpan))
