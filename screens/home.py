@@ -21,9 +21,9 @@ def menu(camera):
     floating_ufo = menu.add_sprite(ufo_logo, menu.screen.get_rect().center)
 
     menu.btn_states['yellow'] = {
-        'normal': pg.image.load(yellow_btn_normal),
-        'hover': pg.image.load(yellow_btn_hover),
-        'active': pg.image.load(yellow_btn_active),
+        'normal': pg.image.load(yellow_btn_normal).convert_alpha(),
+        'hover': pg.image.load(yellow_btn_hover).convert_alpha(),
+        'active': pg.image.load(yellow_btn_active).convert_alpha(),
     }
 
     (centerx, centery) = menu.screen.get_rect().center
@@ -56,7 +56,6 @@ def menu(camera):
     setattr(BaseScreen, 'update', effects)
 
     return menu
-
 
 def credits(camera):
     credits = BaseScreen('Credits', 'seagreen1', 1)
@@ -96,9 +95,9 @@ def lvls(camera):
     lvls.create_btn('1', 36, 'black', centerx, centery, blue_btn_normal, 'blue')
 
     lvls.btn_states['blue'] = {
-        'normal': pg.image.load(blue_btn_normal),
-        'hover': pg.image.load(blue_btn_hover),
-        'active': pg.image.load(blue_btn_active),
+        'normal': pg.image.load(blue_btn_normal).convert_alpha(),
+        'hover': pg.image.load(blue_btn_hover).convert_alpha(),
+        'active': pg.image.load(blue_btn_active).convert_alpha(),
     }
 
     def effects(self):
@@ -109,9 +108,9 @@ def lvls(camera):
 
 def create_menu_btn(screen):
     screen.btn_states['red'] = {
-        'normal': pg.image.load(red_btn_normal),
-        'hover': pg.image.load(red_btn_hover),
-        'active': pg.image.load(red_btn_active),
+        'normal': pg.image.load(red_btn_normal).convert_alpha(),
+        'hover': pg.image.load(red_btn_hover).convert_alpha(),
+        'active': pg.image.load(red_btn_active).convert_alpha(),
     }
 
     (topleftx, toplefty) = screen.screen.get_rect().topleft

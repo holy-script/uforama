@@ -38,7 +38,7 @@ def main():
             if event.type == director.events['FADE_OUT_BANNER']:
                 director.end_screen()
             if event.type == director.events['FADE_IN_MENU']:
-                director.start_screen('play', 1)
+                director.start_screen('menu')
             if director.current:
                 if director.current.dynamic:
                     if director.current.evts_added:
@@ -62,41 +62,55 @@ def main():
                             if event.type == director.events['FADE_IN_START!']:
                                 director.start_screen('start')
                         else:
-                            # if event.type == director.events['MENU_CLICK']:
-                            #     director.end_screen()
-                            #     pg.time.set_timer(director.events['FADE_IN_MENU'], 1000, 1)
-                            if director.current.name == 'Levels':
-                                if event.type == director.events['1_CLICK']:
-                                    director.end_screen()
-                                    pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
-                                if event.type == director.events['FADE_IN_1']:
-                                    director.start_screen('play', 1)
                             if director.current.name == 'Play':
                                 cam.follow_player = True
-                                if event.type == director.events['LOSER']:
-                                    #director.end_screen()
-                                    #lose banner
-                                    director
-                                if event.type == director.events['ROCKET']:
-                                    cf.set_player_gun_z(1.5)
-                                    [player.toggle_rocket(True) for player in director.current.player_group]
-                                    pg.time.set_timer(director.events['ROCKET_END'], 5000, 1)
-                                if event.type == director.events['ROCKET_END']:
-                                    cf.set_player_gun_z(1)
-                                    [player.toggle_rocket(False) for player in director.current.player_group]
-                                if event.type == director.events['SHIELD']:
-                                    cf.set_dmg_enemies(0, 0, 0)
-                                    pg.time.set_timer(director.events['SHIELD_END'], 5000, 1)
-                                if event.type == director.events['SHIELD_END']:
-                                    cf.set_dmg_enemies(10, 4, 12)
-                                if event.type == director.events['SLOW']:
-                                    cf.set_speed_enemies((2, 1), (0.2, 0.2), (0.8, 1.6))
-                                    [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
-                                    pg.time.set_timer(director.events['SLOW_END'], 5000, 1)
-                                if event.type == director.events['SLOW_END']:
-                                    cf.set_speed_enemies((10, 5), (2, 2), (4, 8))
-                                    [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
-        
+                                if director.current.evts_added:
+                                    if event.type == director.events['LOSER']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_LOSE'], 1000, 1)
+                                    if event.type == director.events['ROCKET']:
+                                        cf.set_player_gun_z(1.5)
+                                        [player.toggle_rocket(True) for player in director.current.player_group]
+                                        pg.time.set_timer(director.events['ROCKET_END'], 5000, 1)
+                                    if event.type == director.events['ROCKET_END']:
+                                        cf.set_player_gun_z(1)
+                                        [player.toggle_rocket(False) for player in director.current.player_group]
+                                    if event.type == director.events['SHIELD']:
+                                        cf.set_dmg_enemies(0, 0, 0)
+                                        pg.time.set_timer(director.events['SHIELD_END'], 5000, 1)
+                                    if event.type == director.events['SHIELD_END']:
+                                        cf.set_dmg_enemies(10, 4, 12)
+                                    if event.type == director.events['SLOW']:
+                                        cf.set_speed_enemies((2, 1), (1.2, 1.2), (0.8, 1.6))
+                                        [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
+                                        pg.time.set_timer(director.events['SLOW_END'], 5000, 1)
+                                    if event.type == director.events['SLOW_END']:
+                                        cf.set_speed_enemies((10, 5), (6, 6), (4, 8))
+                                        [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
+                                    if event.type == director.events['FADE_IN_LOSE']:
+                                        director.start_screen('lose')
+                                        pg.time.set_timer(director.events['FADE_OUT_LOSE'], 2000, 1)
+                                    if event.type == director.events['FADE_IN_WIN']:
+                                        director.start_screen('win')
+                            else:
+                                if event.type == director.events['MENU_CLICK']:
+                                    director.end_screen()
+                                    pg.time.set_timer(director.events['FADE_IN_MENU'], 1000, 1)
+                                if director.current.name == 'Levels':
+                                    if event.type == director.events['1_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
+                                        cam.set_crosshair()
+                                    if event.type == director.events['FADE_IN_1']:
+                                        director.start_screen('play', 1)
+                else:
+                    if director.current.name == 'Win' or director.current.name == 'Lose':
+                        if event.type == director.events['FADE_OUT_LOSE']:
+                            cam.set_pointer()
+                            director.end_screen()
+                            pg.time.set_timer(director.events['FADE_IN_MENU'], 1500, 1)
+                        if event.type == director.events['FADE_OUT_WIN']:
+                            director.end_screen()
         window.fill(pg.Color('black'))
         director.direct()
         cam.render()

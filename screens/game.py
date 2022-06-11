@@ -7,7 +7,6 @@ from operator import sub
 import config as cf
 from classes.sprite import PlayerSprite, EnemySprite
 
-crosshair_icon = os.path.join(os.path.dirname(__file__), '..', 'assets', 'crosshair_icon.png')
 bg_00 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg_00.png')
 bg_01 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg_01.png')
 bg_02 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg_02.png')
@@ -39,8 +38,6 @@ def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
     play.set_camera(camera)
     play.create(True)
-    play.camera.mouse.image = pg.image.load(crosshair_icon)
-    play.to_copy = True
     play.triggers['LOSER'] = -1
     play.triggers['ROCKET'] = -1
     play.triggers['SHIELD'] = -1
@@ -48,6 +45,10 @@ def play(camera, lvl):
     play.triggers['ROCKET_END'] = -1
     play.triggers['SHIELD_END'] = -1
     play.triggers['SLOW_END'] = -1
+    play.triggers['FADE_IN_LOSE'] = -1
+    play.triggers['FADE_IN_WIN'] = -1
+    play.triggers['FADE_OUT_LOSE'] = -1
+    play.triggers['FADE_OUT_WIN'] = -1
 
     levels = {
         '1': level1
@@ -99,10 +100,9 @@ def level1(screen):
     EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
-        'beige', 
+        'yellow', 
         (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), 
         (enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), 
-        (10, 5)
     )
     EnemySprite(
         screen, 
@@ -110,7 +110,6 @@ def level1(screen):
         'yellow', 
         (enemy_base.rect.centerx - 125, enemy_base.rect.centerx + 250), 
         (enemy_base.rect.centery - 90, enemy_base.rect.centery + 100), 
-        (10, 5)
     )
 
     screen.add_sprite(bg_02, (0, 1200), "bottomleft")

@@ -5,12 +5,15 @@ import os
 import config as cf
 
 class GameSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, sticky):
+    def __init__(self, src, screen, point, pos, sticky, btn=False):
         super().__init__()
         self.image = pg.image.load(src).convert_alpha()
         self.rect = self.image.get_rect()
         self.add(screen.camera)
-        setattr(self.rect, pos, screen.camera.offset + point)
+        if btn:
+            setattr(self.rect, pos, point)
+        else:
+            setattr(self.rect, pos, screen.camera.offset + point)
         self.pos = pos
         self.point = point
         self.sticky = sticky
@@ -126,6 +129,7 @@ class PlayerSprite(pg.sprite.Sprite):
         self.radius = self.gun.image.get_size()[0] / 2
         self.zoom = 1
         self.use_rocket = False
+        self.dead = False
 
     def toggle_rocket(self, use):
         self.use_rocket = use
@@ -173,8 +177,9 @@ class PlayerSprite(pg.sprite.Sprite):
         else:
             self.shooting = False
         
-        if self.health <= 0:
-            print("dead!")
+        if self.health <= 0 and not self.dead:
+            pg.event.post(pg.event.Event(self.screen.triggers['LOSER']))
+            self.dead = True
 
 class GunSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, offset, parent, damage=10):
@@ -262,7 +267,7 @@ powerups = {
 }
 
 class EnemySprite(pg.sprite.Sprite):
-    def __init__(self, screen, point, type, range_x, range_y, speed):
+    def __init__(self, screen, point, type, range_x, range_y):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(enemies[type]['image']).convert_alpha()
@@ -272,7 +277,7 @@ class EnemySprite(pg.sprite.Sprite):
         self.health = 100
         self.range_x = range_x
         self.range_y = range_y
-        self.speed = pg.math.Vector2(speed)
+        self.speed = pg.math.Vector2(cf.get_speed(type))
         self.add(self.screen.enemy_group)
         self.guns = [
             GunSprite(enemies[type]['gun'], self.screen, offset, self) 
@@ -310,7 +315,7 @@ class EnemySprite(pg.sprite.Sprite):
             self.rect.centery += self.speed.y
         
         if self.health <= 0:
-            PowerupSprite(self.screen, self.rect.center, 'shield')
+            PowerupSprite(self.screen, self.rect.center, 'slow')
             PoofSprite(self.screen, self.rect.center)
             [gun.kill() for gun in self.guns]
             self.kill()

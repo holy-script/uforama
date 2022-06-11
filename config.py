@@ -12,6 +12,7 @@ config = {
         "yellow": (10, 5),
         "beige": (2, 2),
         "pink": (4, 8),
+        "blue": (4, 8),
     },
 }
 

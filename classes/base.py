@@ -17,6 +17,7 @@ class BaseScreen:
         self.angle = 0
         self.enemy_group = pg.sprite.Group()
         self.player_group = pg.sprite.GroupSingle()
+        self.sprites = []
     
     def create(self, dynamic=False):
         self.screen = pg.Surface(self.size)
@@ -31,9 +32,13 @@ class BaseScreen:
     def set_camera(self, camera):
         self.camera = camera
     
-    def add_sprite(self, path, point, pos='center', sticky=False):
-        sprite = GameSprite(path, self, point, pos, sticky)
-        return sprite
+    def add_sprite(self, path, point, pos='center', sticky=False, btn=False):
+        sprite = GameSprite(path, self, point, pos, sticky, True)
+        if btn:
+            self.sprites.append(sprite)
+            return (sprite, len(self.sprites) - 1)
+        else:
+            return sprite
     
     def add_text(self, size, pos, text, color, bg=None):
         font = pg.font.SysFont(None, size)
@@ -46,8 +51,8 @@ class BaseScreen:
             f'{name}_x': x,
             f'{name}_y': y,
             f'{name}_y_active': y + 2,
-            f'{name}_btn': self.add_sprite(def_path, self.screen.get_rect(center=(x, y)).center),
-            f'{name}_txt': self.add_text(font_size, self.screen.get_rect(center=(x, y)).center, name, color),
+            f'{name}_btn': self.add_sprite(def_path, (x, y), btn=True),
+            f'{name}_txt': self.add_text(font_size, (x, y), name, color),
             f'{name}_evt': f'{name.upper()}_CLICK',
             'evt_code': -1,
             'triggered': False,

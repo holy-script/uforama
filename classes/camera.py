@@ -3,6 +3,8 @@ from pygame.locals import *
 import os
 import config as cf
 
+pointer = os.path.join(os.path.dirname(__file__), "..", 'assets', 'mouse_icon.png')
+crosshair = os.path.join(os.path.dirname(__file__), '..', 'assets', 'crosshair_icon.png')
 
 class BasicCamera(pg.sprite.Group):
     def __init__(self):
@@ -10,7 +12,7 @@ class BasicCamera(pg.sprite.Group):
         self.display = pg.display.get_surface()
         self.texts = []
         self.mouse = pg.sprite.Sprite()
-        self.mouse.image = pg.image.load(os.path.join(os.path.dirname(__file__), "..", 'assets', 'mouse_icon.png'))
+        self.mouse.image = pg.image.load(pointer).convert_alpha()
         self.mouse.image = pg.transform.rotate(self.mouse.image, 30)
         self.mouse.rect = self.mouse.image.get_rect()
         pg.mouse.set_visible(False)
@@ -29,6 +31,24 @@ class BasicCamera(pg.sprite.Group):
         )
         self.follow_player = False
         self.map_rect = pg.Rect(0, 0, 0, 0)
+        self.need_offset = False
+
+    def set_pointer(self):
+        self.follow_player = False
+        self.need_offset = False
+        self.mouse.image = pg.image.load(pointer).convert_alpha()
+        self.mouse.image = pg.transform.rotate(self.mouse.image, 30)
+    
+    def set_crosshair(self):
+        self.follow_player = True
+        self.need_offset = True
+        self.player = pg.Rect(0, 0, 0, 0)
+        self.map_rect = pg.Rect(0, 0, 0, 0)
+        self.cam_rect = pg.Rect(
+            self.cam_box['left'], self.cam_box['top'], 
+            self.display.get_rect().width - (2 * self.cam_box['left']), self.display.get_rect().height - (2 * self.cam_box['top'])
+        )
+        self.mouse.image = pg.image.load(crosshair).convert_alpha()
 
     def set_texts(self, texts):
         self.texts = texts
@@ -68,7 +88,10 @@ class BasicCamera(pg.sprite.Group):
             self.display.blit(sprite.image, offset_pos)
 
     def render(self):
-        [self.offset_draw(sprite) for sprite in self.sprites()]
+        if self.need_offset:
+            [self.offset_draw(sprite) for sprite in self.sprites()]
+        else:
+            [self.display.blit(sprite.image, sprite.rect) for sprite in self.sprites()]
             
         if self.follow_player:
             self.player_camera()

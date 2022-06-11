@@ -24,13 +24,16 @@ class Director:
             "options": home.options,
             "start": home.lvls,
             "play": game.play,
+            "win": splash.win,
+            "lose": splash.lose,
         }
         self.current = None
 
     def make_event(self, name):
-        self.evt_count += 1
-        self.events[name] = USEREVENT + self.evt_count
-        return self.events[name]
+        if name not in self.events:
+            self.evt_count += 1
+            self.events[name] = USEREVENT + self.evt_count
+            return self.events[name]
     
     @staticmethod
     def translate(value, leftMin, leftMax, rightMin, rightMax):
@@ -88,9 +91,9 @@ class Director:
             self.transition()
         else:
             if self.current.dynamic:
-                self.current.update()
                 if not self.current.evts_added:
                     (self.events, self.evt_count) = self.current.evt_call(self.events, self.evt_count)
                     self.current.evts_added = True
+                self.current.update()
 
         self.window.blit(self.current.screen, (0, 0))
