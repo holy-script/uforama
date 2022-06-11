@@ -31,6 +31,9 @@ shield_bad = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_bad
 shield_good = os.path.join(os.path.dirname(__file__), '..', 'assets', 'shield_good.png')
 health_bar = os.path.join(os.path.dirname(__file__), '..', 'assets', 'health_bar.png')
 health_val = os.path.join(os.path.dirname(__file__), '..', 'assets', 'health_val.png')
+tracker = os.path.join(os.path.dirname(__file__), '..', 'assets', 'tracker.png')
+flag = os.path.join(os.path.dirname(__file__), '..', 'assets', 'flag.png')
+point = os.path.join(os.path.dirname(__file__), '..', 'assets', 'point.png')
 
 def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
@@ -39,6 +42,12 @@ def play(camera, lvl):
     play.camera.mouse.image = pg.image.load(crosshair_icon)
     play.to_copy = True
     play.triggers['LOSER'] = -1
+    play.triggers['ROCKET'] = -1
+    play.triggers['SHIELD'] = -1
+    play.triggers['SLOW'] = -1
+    play.triggers['ROCKET_END'] = -1
+    play.triggers['SHIELD_END'] = -1
+    play.triggers['SLOW_END'] = -1
 
     levels = {
         '1': level1
@@ -95,6 +104,14 @@ def level1(screen):
         (enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), 
         (10, 5)
     )
+    EnemySprite(
+        screen, 
+        (layer1.rect.centerx, 357), 
+        'yellow', 
+        (enemy_base.rect.centerx - 125, enemy_base.rect.centerx + 250), 
+        (enemy_base.rect.centery - 90, enemy_base.rect.centery + 100), 
+        (10, 5)
+    )
 
     screen.add_sprite(bg_02, (0, 1200), "bottomleft")
 
@@ -112,9 +129,15 @@ def level1(screen):
     hv = screen.add_sprite(health_val, pg.math.Vector2(29, 32), "topleft", True)
     hv.cropped = True
     screen.add_sprite(health_bar, pg.math.Vector2(20, 20), "topleft", True)
+    track = screen.add_sprite(tracker, pg.math.Vector2(screen.camera.half_width, screen.camera.half_height * 2 - 20), "center", True)
+    screen.add_sprite(flag, pg.math.Vector2(screen.camera.half_width - track.width / 2, screen.camera.half_height * 2 - 20), "center", True)
+    screen.add_sprite(point, pg.math.Vector2(screen.camera.half_width - track.width / 2 + track.width / 3, screen.camera.half_height * 2 - 20), "center", True)
 
     def controls(self):
         hv.crop_area = hv.image.get_rect(width=screen.translate(player.health, 0, 100, 0, hv.width))
+
+        if not self.enemy_group.sprites():
+            print("next")
 
         layer2_a.rect.x -= cloud_speed
         if layer2_a.rect.x < -layer1.rect.width:

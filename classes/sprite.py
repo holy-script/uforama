@@ -28,7 +28,7 @@ class GameSprite(pg.sprite.Sprite):
         self.kill()
 
 class BulletSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, parent):
+    def __init__(self, src, screen, point, pos, parent, dmg=10):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(src).convert_alpha()
@@ -45,7 +45,7 @@ class BulletSprite(pg.sprite.Sprite):
         self.direction = pg.math.Vector2(
             (math.cos(math.radians(self.parent.angle)) * self.speed, -math.sin(math.radians(self.parent.angle)) * self.speed)
         )
-        self.damage = 10
+        self.damage = dmg
 
     def hit(self, sprite):
         sprite.health -= self.damage
@@ -60,6 +60,8 @@ class BulletSprite(pg.sprite.Sprite):
             enemy_hit = pg.sprite.spritecollide(self, self.screen.enemy_group, False)
             if enemy_hit:
                 [self.hit(enemy) for enemy in enemy_hit]
+                if self.damage == 50:
+                    BoomSprite(self.screen, self.rect.center)
                 self.kill()
         else:
             player_hit = pg.sprite.spritecollide(self, self.screen.player_group, False)
@@ -68,7 +70,7 @@ class BulletSprite(pg.sprite.Sprite):
                 self.kill()
 
 class MineSprite(pg.sprite.Sprite):
-    def __init__(self, src, screen, point, pos, parent):
+    def __init__(self, src, screen, point, pos, parent, dmg=10):
         super().__init__()
         self.screen = screen
         self.image = pg.image.load(src).convert_alpha()
@@ -78,7 +80,7 @@ class MineSprite(pg.sprite.Sprite):
         self.img_copy = self.image.copy()
         self.parent = parent
         self.angle = self.parent.angle
-        self.damage = 20
+        self.damage = dmg
 
     def hit(self, sprite):
         sprite.health -= self.damage
@@ -117,12 +119,20 @@ class PlayerSprite(pg.sprite.Sprite):
             self
         )
         self.bullet = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bullet_green.png')
+        self.rocket = os.path.join(os.path.dirname(__file__), '..', 'assets', 'rocket.png')
         self.shooting = False
         self.add(self.screen.player_group)
         self.angle = 0
         self.radius = self.gun.image.get_size()[0] / 2
-    
+        self.zoom = 1
+        self.use_rocket = False
+
+    def toggle_rocket(self, use):
+        self.use_rocket = use
+
     def update(self):
+        self.zoom = cf.get_player_gun_z()
+
         if self.screen.pressed[K_w]:
             self.screen.direction.y = -1
         elif self.screen.pressed[K_s]:
@@ -155,7 +165,10 @@ class PlayerSprite(pg.sprite.Sprite):
                     self.radius * math.cos(math.radians(self.angle)),
                     -self.radius * math.sin(math.radians(self.angle))
                 )
-                BulletSprite(self.bullet, self.screen, self.gun.rect.center + circ, "center", self)
+                if not self.use_rocket:
+                    BulletSprite(self.bullet, self.screen, self.gun.rect.center + circ, "center", self, 25)
+                else:
+                    BulletSprite(self.rocket, self.screen, self.gun.rect.center + circ, "center", self, 50)
                 self.shooting = True
         else:
             self.shooting = False
@@ -192,7 +205,7 @@ class GunSprite(pg.sprite.Sprite):
         self.parent.angle = angle
 
         self.old_rect = self.rect
-        self.image = pg.transform.rotozoom(self.img_copy, angle, 1).convert_alpha()
+        self.image = pg.transform.rotozoom(self.img_copy, angle, self.parent.zoom).convert_alpha()
         self.rect = self.image.get_rect(center=self.old_rect.center)
 
 enemies = {
@@ -233,6 +246,21 @@ enemies = {
     },
 }
 
+powerups = {
+    'shield': {
+        'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_shield.png'),
+        'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['SHIELD'])),
+    },
+    'rocket': {
+        'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_rocket.png'),
+        'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['ROCKET'])),
+    },
+    'slow': {
+        'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_slow.png'),
+        'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['SLOW'])),
+    },
+}
+
 class EnemySprite(pg.sprite.Sprite):
     def __init__(self, screen, point, type, range_x, range_y, speed):
         super().__init__()
@@ -241,7 +269,6 @@ class EnemySprite(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.add(screen.camera)
         setattr(self.rect, "center", point)
-        self.speed = 10
         self.health = 100
         self.range_x = range_x
         self.range_y = range_y
@@ -257,13 +284,17 @@ class EnemySprite(pg.sprite.Sprite):
         self.angle = 0
         if self.guns:
             self.radius = self.guns[0].image.get_size()[0] / 2
+        self.zoom = 1
     
     def shoot(self, gun):
         circ = pg.math.Vector2(
             self.radius * math.cos(math.radians(self.angle)),
             -self.radius * math.sin(math.radians(self.angle))
         )
-        enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center + circ, "center", parent=self)
+        enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center + circ, "center", self, cf.get_dmg(self.type))
+    
+    def set_speed(self, speed):
+        self.speed = pg.math.Vector2(speed)
     
     def update(self):
         if self.rect.centerx > self.range_x[1] or self.rect.centerx < self.range_x[0]:
@@ -279,6 +310,7 @@ class EnemySprite(pg.sprite.Sprite):
             self.rect.centery += self.speed.y
         
         if self.health <= 0:
+            PowerupSprite(self.screen, self.rect.center, 'shield')
             PoofSprite(self.screen, self.rect.center)
             [gun.kill() for gun in self.guns]
             self.kill()
@@ -330,7 +362,7 @@ class PoofSprite(pg.sprite.Sprite):
             self.frame_counter += 1
 
 class BoomSprite(pg.sprite.Sprite):
-    def __init__(self, screen, point):
+    def __init__(self, screen, point, big=False):
         super().__init__()
         self.src = [
             os.path.join(os.path.dirname(__file__), '..', 'assets', 'boom_00.png'),
@@ -370,3 +402,43 @@ class BoomSprite(pg.sprite.Sprite):
             self.frames.append(self.frames.pop(0))
             self.counter = 0
             self.frame_counter += 1
+
+class PowerupSprite(pg.sprite.Sprite):
+    def __init__(self, screen, point, type):
+        super().__init__()
+        self.screen = screen
+        self.image = pg.image.load(powerups[type]['src']).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.add(screen.camera)
+        setattr(self.rect, "center", point)
+        self.timeout = 20
+        self.counter = 0
+        self.flash_time = 1 * cf.get_fps()
+        self.type = type
+    
+    @staticmethod
+    def translate(value, leftMin, leftMax, rightMin, rightMax):
+        # Figure out how 'wide' each range is
+        leftSpan = leftMax - leftMin
+        rightSpan = rightMax - rightMin
+
+        # Convert the left range into a 0-1 range (float)
+        valueScaled = float(value - leftMin) / float(leftSpan)
+
+        # Convert the 0-1 range into a value in the right range.
+        return round(rightMin + (valueScaled * rightSpan))
+    
+    def update(self):
+        self.counter += 1
+        self.image.set_alpha(self.translate(self.counter, 0, self.flash_time, 126, 255))
+        if self.counter >= self.flash_time:
+            self.counter = 0
+            self.timeout -= 1
+        
+        if self.timeout <= 0:
+            self.kill()
+        
+        player_take = pg.sprite.spritecollide(self, self.screen.player_group, False)
+        if player_take:
+            powerups[self.type]['effect'](self.screen)
+            self.kill()

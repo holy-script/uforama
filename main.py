@@ -77,6 +77,25 @@ def main():
                                     #director.end_screen()
                                     #lose banner
                                     director
+                                if event.type == director.events['ROCKET']:
+                                    cf.set_player_gun_z(1.5)
+                                    [player.toggle_rocket(True) for player in director.current.player_group]
+                                    pg.time.set_timer(director.events['ROCKET_END'], 5000, 1)
+                                if event.type == director.events['ROCKET_END']:
+                                    cf.set_player_gun_z(1)
+                                    [player.toggle_rocket(False) for player in director.current.player_group]
+                                if event.type == director.events['SHIELD']:
+                                    cf.set_dmg_enemies(0, 0, 0)
+                                    pg.time.set_timer(director.events['SHIELD_END'], 5000, 1)
+                                if event.type == director.events['SHIELD_END']:
+                                    cf.set_dmg_enemies(10, 4, 12)
+                                if event.type == director.events['SLOW']:
+                                    cf.set_speed_enemies((2, 1), (0.2, 0.2), (0.8, 1.6))
+                                    [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
+                                    pg.time.set_timer(director.events['SLOW_END'], 5000, 1)
+                                if event.type == director.events['SLOW_END']:
+                                    cf.set_speed_enemies((10, 5), (2, 2), (4, 8))
+                                    [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
         
         window.fill(pg.Color('black'))
         director.direct()
