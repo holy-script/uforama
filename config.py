@@ -1,7 +1,7 @@
 config = {
     "width": 720,
     "height": 576,
-    "fps": 30,
+    "fps": 60, # can use 30 fps instead
     "player_gun_zoom": 1,
     "dmg": {
         "yellow": 10,
@@ -9,10 +9,11 @@ config = {
         "pink": 12,
     },
     "speed": {
-        "yellow": (10, 5),
-        "beige": (2, 2),
-        "pink": (4, 8),
-        "blue": (4, 8),
+        # if using 30 fps, choose
+        "yellow": (5, 3), # (10, 5)
+        "beige": (3, 3), # (2, 2)
+        "pink": (2, 4), # (4, 8)
+        "blue": (2, 4), # (4, 8)
     },
 }
 

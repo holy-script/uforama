@@ -68,6 +68,9 @@ def main():
                                     if event.type == director.events['LOSER']:
                                         director.end_screen()
                                         pg.time.set_timer(director.events['FADE_IN_LOSE'], 1000, 1)
+                                    if event.type == director.events['WINNER']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_WIN'], 1000, 1)
                                     if event.type == director.events['ROCKET']:
                                         cf.set_player_gun_z(1.5)
                                         [player.toggle_rocket(True) for player in director.current.player_group]
@@ -92,6 +95,7 @@ def main():
                                         pg.time.set_timer(director.events['FADE_OUT_LOSE'], 2000, 1)
                                     if event.type == director.events['FADE_IN_WIN']:
                                         director.start_screen('win')
+                                        pg.time.set_timer(director.events['FADE_OUT_WIN'], 2000, 1)
                             else:
                                 if event.type == director.events['MENU_CLICK']:
                                     director.end_screen()
@@ -110,7 +114,9 @@ def main():
                             director.end_screen()
                             pg.time.set_timer(director.events['FADE_IN_MENU'], 1500, 1)
                         if event.type == director.events['FADE_OUT_WIN']:
+                            cam.set_pointer()
                             director.end_screen()
+                            pg.time.set_timer(director.events['FADE_IN_MENU'], 1500, 1)
         window.fill(pg.Color('black'))
         director.direct()
         cam.render()

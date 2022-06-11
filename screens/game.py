@@ -39,6 +39,7 @@ def play(camera, lvl):
     play.set_camera(camera)
     play.create(True)
     play.triggers['LOSER'] = -1
+    play.triggers['WINNER'] = -1
     play.triggers['ROCKET'] = -1
     play.triggers['SHIELD'] = -1
     play.triggers['SLOW'] = -1
@@ -93,23 +94,20 @@ def level1(screen):
     screen.add_sprite(flora_03, (1598, 1010), "bottomleft")
     screen.add_sprite(flora_04, (1704, 1010), "bottomleft")
 
-    enemy_shield = screen.add_sprite(shield_good, (layer1.rect.centerx, 357), "center")
-    enemy_base = screen.add_sprite(station_good, (layer1.rect.centerx, 357), "center")
+    enemy_shield = screen.add_sprite(shield_bad, (layer1.rect.centerx, 357), "center")
+    enemy_base = screen.add_sprite(station_bad, (layer1.rect.centerx, 357), "center")
+
+    player_shield = screen.add_sprite(shield_good, (layer1.rect.centerx, 0), "midbottom")
+    player_base = screen.add_sprite(station_good, (layer1.rect.centerx, 0), "midbottom")
+
     #268 end game
 
-    EnemySprite(
+    enemy_patrol = EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
         'yellow', 
-        (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250), 
+        (enemy_base.rect.centerx - 700, enemy_base.rect.centerx + 700), 
         (enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), 
-    )
-    EnemySprite(
-        screen, 
-        (layer1.rect.centerx, 357), 
-        'yellow', 
-        (enemy_base.rect.centerx - 125, enemy_base.rect.centerx + 250), 
-        (enemy_base.rect.centery - 90, enemy_base.rect.centery + 100), 
     )
 
     screen.add_sprite(bg_02, (0, 1200), "bottomleft")
@@ -129,14 +127,86 @@ def level1(screen):
     hv.cropped = True
     screen.add_sprite(health_bar, pg.math.Vector2(20, 20), "topleft", True)
     track = screen.add_sprite(tracker, pg.math.Vector2(screen.camera.half_width, screen.camera.half_height * 2 - 20), "center", True)
-    screen.add_sprite(flag, pg.math.Vector2(screen.camera.half_width - track.width / 2, screen.camera.half_height * 2 - 20), "center", True)
-    screen.add_sprite(point, pg.math.Vector2(screen.camera.half_width - track.width / 2 + track.width / 3, screen.camera.half_height * 2 - 20), "center", True)
+
+    wave_points = [
+        {
+            'x_off': 0,
+            'alive': True,
+            'sprite': None,
+            'triggered': False,
+            'enemies': [
+                {
+                    'type': 'blue',
+                    'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
+                    'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
+                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                },
+            ]
+        },
+        {
+            'x_off': 0,
+            'alive': True,
+            'sprite': None,
+            'triggered': False,
+            'enemies': [
+                {
+                    'type': 'beige',
+                    'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
+                    'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
+                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                },
+            ]
+        },
+        {
+            'x_off': 0,
+            'alive': True,
+            'sprite': None,
+            'triggered': False,
+            'enemies': [
+                {
+                    'type': 'pink',
+                    'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
+                    'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
+                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                },
+            ]
+        },
+    ]
+
+    setattr(screen, 'wave_points', wave_points)
+    setattr(screen, 'base_down', False)
+
+    def create_wave(i):
+        wave_points[i-1]['sprite'] = screen.add_sprite(point, pg.math.Vector2(screen.camera.half_width - track.width / 2 + track.width * i / (len(wave_points) + 1), screen.camera.half_height * 2 - 20), "center", True)
+        wave_points[i-1]['x_off'] = screen.camera.half_width - track.width / 2 + track.width * i / (len(wave_points) + 1)
+
+    [create_wave(i) for i in range(1, len(wave_points) + 1)]
+
+    flag_mark = screen.add_sprite(flag, pg.math.Vector2(screen.camera.half_width - track.width / 2, screen.camera.half_height * 2 - 20), "center", True)
+
+    base_speed = 1
 
     def controls(self):
-        hv.crop_area = hv.image.get_rect(width=screen.translate(player.health, 0, 100, 0, hv.width))
+        if self.wave_points:
+            if not self.wave_points[0]['triggered']:
+                if self.wave_points[0]['sprite'].rect.centerx == flag_mark.rect.centerx:
+                    self.wave_points[0]['triggered'] = True
+            if not self.enemy_group.sprites():
+                self.wave_points[0]['alive'] = False
+                if not self.wave_points[0]['alive']:
+                    flag_mark.point = (self.wave_points[0]['x_off'], flag_mark.point[1])
+                    [
+                        EnemySprite(self, enemy['spawn'], enemy['type'], enemy['x_range'], enemy['y_range']) 
+                        for enemy in self.wave_points[0]['enemies']
+                    ]
+                    self.wave_points.pop(0)
+        else:
+            if not self.enemy_group.sprites() and self.base_down:
+                flag_mark.point = pg.math.Vector2(screen.camera.half_width + track.width / 2, screen.camera.half_height * 2 - 20)
+                pg.event.post(pg.event.Event(self.triggers['WINNER']))
+        
 
-        if not self.enemy_group.sprites():
-            print("next")
+        hv.crop_area = hv.image.get_rect(width=screen.translate(player.health, 0, 100, 0, hv.width))
 
         layer2_a.rect.x -= cloud_speed
         if layer2_a.rect.x < -layer1.rect.width:
@@ -146,12 +216,29 @@ def level1(screen):
             layer2_b.rect.x = layer1.rect.centerx * 2 - cloud_speed
 
         if enemy_base.rect.top < 1010 - 268:
-            enemy_shield.rect.centery += 1
-            enemy_base.rect.centery += 1
+            if flag_mark.rect.centerx == screen.camera.offset.x + screen.camera.half_width - track.width / 2:
+                if pg.sprite.spritecollide(enemy_shield, self.enemy_group, False):
+                    enemy_shield.rect.centery += base_speed
+                    enemy_base.rect.centery += base_speed
+            else:
+                if enemy_base.rect.bottom > 0:
+                    enemy_shield.rect.centery -= base_speed
+                    enemy_base.rect.centery -= base_speed
+                else:
+                    if player_base.rect.bottom < layer1.rect.top + 149:
+                        player_shield.rect.centery += base_speed
+                        player_base.rect.centery += base_speed
+                    else:
+                        if player_base.rect.top < 1010 - 330:
+                            if pg.sprite.spritecollide(player_shield, self.player_group, False):
+                                player_shield.rect.centery += base_speed
+                                player_base.rect.centery += base_speed
+                        else:
+                            self.base_down = True
         else:
             pg.event.post(pg.event.Event(self.triggers['LOSER']))
         
-        # enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
+        enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
         #330 for good
     
     return controls

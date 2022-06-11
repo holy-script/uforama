@@ -43,7 +43,7 @@ class BulletSprite(pg.sprite.Sprite):
         self.parent = parent
         self.image = pg.transform.rotozoom(self.img_copy, self.parent.angle, 1).convert_alpha()
         self.rect = self.image.get_rect(center=self.old_rect.center)
-        self.speed = 10
+        self.speed = 10 if cf.get_fps() == 60 else 20
         self.pos = pg.math.Vector2(point)
         self.direction = pg.math.Vector2(
             (math.cos(math.radians(self.parent.angle)) * self.speed, -math.sin(math.radians(self.parent.angle)) * self.speed)
@@ -113,7 +113,7 @@ class PlayerSprite(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.add(screen.camera)
         setattr(self.rect, "center", point)
-        self.speed = 10
+        self.speed = 5 if cf.get_fps() == 60 else 10
         self.health = 100
         self.gun = GunSprite(
             os.path.join(os.path.dirname(__file__), '..', 'assets', 'gun_green.png'),
