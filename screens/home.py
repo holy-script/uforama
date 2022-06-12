@@ -35,6 +35,8 @@ def menu(camera):
     menu.create_btn('Options', 36, 'hotpink', centerx, centery + 18, yellow_btn_normal, 'yellow')
     menu.create_btn('Credits', 36, 'hotpink', centerx, centery + 90, yellow_btn_normal, 'yellow')
     menu.create_btn('Exit', 36, 'hotpink', centerx, centery + 162, yellow_btn_normal, 'yellow')
+    menu.add_text(32, (centerx, centery + 226), "A Fast-Paced Shoot'Em Up with UFOs!", 'dodgerblue3')
+    menu.add_text(32, (centerx, centery + 258), 'Developed by Palash Johri', 'dodgerblue3')
     
     setattr(menu, 'float_limit', 20)
     setattr(menu, 'float_counter', 0)
@@ -66,6 +68,15 @@ def credits(camera):
     credits.create(True)
 
     create_menu_btn(credits)
+
+    (centerx, centery) = credits.screen.get_rect().center
+
+    credits.add_text(36, (centerx, centery - 162), 'kenney.itch.io', 'sienna4')
+    credits.add_text(36, (centerx, centery - 90), 'gamrets.itch.io', 'sienna4')
+    credits.add_text(36, (centerx, centery - 18), 'mobilegamegraphics.itch.io', 'sienna4')
+    credits.add_text(36, (centerx, centery + 54), 'void1gaming.itch.io', 'sienna4')
+    credits.add_text(36, (centerx, centery + 126), 'gooseninja.itch.io', 'sienna4')
+    credits.add_text(36, (centerx, centery + 198), 'gamesupply.itch.io', 'sienna4')
 
     def effects(self):
         self.handle_btn_clicks()
