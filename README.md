@@ -18,7 +18,7 @@ This section is for the developers. Highlights my ~14 day journey to building th
 ![2nd Level Map](https://i.ibb.co/KqzpSjr/Screenshot-2022-06-12-220050.png)
 
 #### First Combat Area - 
-![1st Level Map](https://i.ibb.co/z2pVWjL/Screenshot-2022-06-12-220226.png)
+![1st Level Map](https://i.ibb.co/fCVnxXg/Screenshot-2022-06-12-220226.png)
 
 ## Video Links:
 
