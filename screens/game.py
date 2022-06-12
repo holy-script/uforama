@@ -44,6 +44,14 @@ health_val = os.path.join(os.path.dirname(__file__), '..', 'assets', 'health_val
 tracker = os.path.join(os.path.dirname(__file__), '..', 'assets', 'tracker.png')
 flag = os.path.join(os.path.dirname(__file__), '..', 'assets', 'flag.png')
 point = os.path.join(os.path.dirname(__file__), '..', 'assets', 'point.png')
+cloud1 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud1.png')
+cloud2 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud2.png')
+cloud3 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud3.png')
+cloud4 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud4.png')
+cloud5 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud5.png')
+cloud6 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud6.png')
+cloud7 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud7.png')
+cloud8 = os.path.join(os.path.dirname(__file__), '..', 'assets', 'cloud8.png')
 
 def play(camera, lvl):
     play = BaseScreen('Play', 'black', 1)
@@ -113,7 +121,7 @@ def level1(screen):
     player_shield = screen.add_sprite(shield_good, (layer1.rect.centerx, 0), "midbottom")
     player_base = screen.add_sprite(station_good, (layer1.rect.centerx, 0), "midbottom")
 
-    enemy_patrol = EnemySprite(
+    EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
         'yellow', 
@@ -255,8 +263,12 @@ def level1(screen):
 def level2(screen):
     layer1 = screen.add_sprite(bg_10, (0, 0), "topleft")
     screen.add_sprite(bg_11, (0, 0), "topleft")
+    c1 = screen.add_sprite(cloud5, (1235, 630), "center")
     screen.add_sprite(bg_13, (0, 1240), "bottomleft")
+    c2 = screen.add_sprite(cloud6, (550, 196), "center")
     screen.add_sprite(bg_14, (0, 1080), "bottomleft")
+    c3 = screen.add_sprite(cloud7, (1465, 258), "center")
+    c4 = screen.add_sprite(cloud8, (693, 384), "center")
 
     enemy_shield = screen.add_sprite(shield_bad, (layer1.rect.centerx, 357), "center")
     enemy_base = screen.add_sprite(station_bad, (layer1.rect.centerx, 357), "center")
@@ -281,7 +293,7 @@ def level2(screen):
     screen.add_sprite(health_bar, pg.math.Vector2(20, 20), "topleft", True)
     track = screen.add_sprite(tracker, pg.math.Vector2(screen.camera.half_width, screen.camera.half_height * 2 - 20), "center", True)
 
-    enemy_patrol = EnemySprite(
+    EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
         'yellow', 
@@ -348,6 +360,20 @@ def level2(screen):
     base_speed = 1
     
     def controls(self):
+        c3.rect.centerx += 2
+        if c3.rect.left > layer1.rect.right:
+            c3.rect.right = layer1.rect.left
+        c4.rect.centerx += 2
+        if c4.rect.left > layer1.rect.right:
+            c4.rect.right = layer1.rect.left
+
+        c1.rect.centerx += 1
+        if c1.rect.left > layer1.rect.right:
+            c1.rect.right = layer1.rect.left
+        c2.rect.centerx += 1
+        if c2.rect.left > layer1.rect.right:
+            c2.rect.right = layer1.rect.left        
+
         if self.wave_points:
             if not self.wave_points[0]['triggered']:
                 if self.wave_points[0]['sprite'].rect.centerx == flag_mark.rect.centerx:
@@ -397,8 +423,12 @@ def level2(screen):
 def level3(screen):
     layer1 = screen.add_sprite(bg_20, (0, 0), "topleft")
     screen.add_sprite(bg_21, (0, 0), "topleft")
+    c1 = screen.add_sprite(cloud1, (1465, 258), "center")
     screen.add_sprite(bg_22, (0, 1240), "bottomleft")
+    c2 = screen.add_sprite(cloud2, (550, 384), "center")
     screen.add_sprite(bg_23, (0, 1240), "bottomleft")
+    c3 = screen.add_sprite(cloud3, (1235, 630), "center")
+    c4 = screen.add_sprite(cloud4, (693, 196), "center")
 
     enemy_shield = screen.add_sprite(shield_bad, (layer1.rect.centerx, 357), "center")
     enemy_base = screen.add_sprite(station_bad, (layer1.rect.centerx, 357), "center")
@@ -424,7 +454,7 @@ def level3(screen):
     screen.add_sprite(health_bar, pg.math.Vector2(20, 20), "topleft", True)
     track = screen.add_sprite(tracker, pg.math.Vector2(screen.camera.half_width, screen.camera.half_height * 2 - 20), "center", True)
 
-    enemy_patrol = EnemySprite(
+    EnemySprite(
         screen, 
         (layer1.rect.centerx, 357), 
         'yellow', 
@@ -491,6 +521,20 @@ def level3(screen):
     base_speed = 1
     
     def controls(self):
+        c3.rect.centerx -= 2
+        if c3.rect.right <= 0:
+            c3.rect.left = layer1.rect.right
+        c4.rect.centerx -= 2
+        if c4.rect.right <= 0:
+            c4.rect.left = layer1.rect.right
+
+        c1.rect.centerx -= 1
+        if c1.rect.right <= 0:
+            c1.rect.left = layer1.rect.right
+        c2.rect.centerx -= 1
+        if c2.rect.right <= 0:
+            c2.rect.left = layer1.rect.right
+
         if self.wave_points:
             if not self.wave_points[0]['triggered']:
                 if self.wave_points[0]['sprite'].rect.centerx == flag_mark.rect.centerx:
