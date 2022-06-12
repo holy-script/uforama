@@ -34,6 +34,36 @@ This section is for the developers. Highlights my ~14 day journey to building th
 ### Challenges Faced:
 
 * Never worked with PyGame before - had to start from scratch.
+* PyGame has no rigid structure for the game flow.
+* Using cameras in PyGame and moving them about a map.
+* Working with rotations and scaling in PyGame
+* Not event driven.
+* No complex sprites.
+
+### Corresponding Solutions:
+
+* I had made small games in Javascript before, so that came in handy.
+* I set up a screen structure like in an app with, transitions, a direction system for event making and flow control.
+* I created a box camera module, following tutorials on the internet
+* I had to do a lot of testing to grasp the concept of Rects and Surfaces, but in the end I had it working like I wanted - hence the awesome graphics!
+* I implemented event handling as most do, but with strict categorization, timing, and delicate connections with the camera, director and screen modules.
+* I tried out a bunch of different rendering methodologies in my custom camera, but in the end went with a traditional approach, using creative wrapper classes around inbuilt sprite classes and using the structure provided by PyGame beforehand.
+
+## Installation:
+
+Download this package from wherever the code is hosted.
+A Python Virtual Environment is preferred, but not necessary.
+Latest Python distributions will work best.
+
+Install dependencies (only PyGame) with the command pip install -r ./requirements.txt or manually installing PyGame.
+
+To run the game, please ensure dependencies are installed, there are no additional apps running, and that you have a mouse ;)
+Then run the command py main.py or python main.py or python3 main.py. Whichever works.
+
+The game has been tested running smoothly at 60FPS on Windows.
+The testing device had high end processors and large RAM, so if it lags, then manually set the game to 30FPS in the config.py file and accordingly change a few more parameters there for better play experience.
+
+The game can be resized from the Options Menu, which switches from between an SD and HD resolution, and can be muted and its difficulty toggled between easy and hard modes - which affect fire rates of enemies.
 
 ## Screenshots:
 
