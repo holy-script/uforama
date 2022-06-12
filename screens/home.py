@@ -15,6 +15,10 @@ blue_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_
 blue_lbtn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_normal.png')
 blue_lbtn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_hover.png')
 blue_lbtn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_active.png')
+green_btn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'green_btn_normal.png')
+green_btn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'green_btn_hover.png')
+green_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'green_btn_active.png')
+howto = os.path.join(os.path.dirname(__file__), '..', 'assets', 'howto.png')
 
 def menu(camera):
     menu = BaseScreen('Menu', 'black', 1.5)
@@ -71,6 +75,7 @@ def credits(camera):
 
     (centerx, centery) = credits.screen.get_rect().center
 
+    credits.add_text(36, (centerx, centery - 234), 'canva.com', 'sienna4')
     credits.add_text(36, (centerx, centery - 162), 'kenney.itch.io', 'sienna4')
     credits.add_text(36, (centerx, centery - 90), 'gamrets.itch.io', 'sienna4')
     credits.add_text(36, (centerx, centery - 18), 'mobilegamegraphics.itch.io', 'sienna4')
@@ -115,6 +120,8 @@ def lvls(camera):
     lvls.create(True)
 
     create_menu_btn(lvls)
+    (x, y) = lvls.screen.get_rect().midtop
+    lvls.create_btn('HOW TO PLAY?', 36, 'black', x, y + 54, green_btn_normal, 'green')
 
     (centerx, centery) = lvls.screen.get_rect().center
 
@@ -126,11 +133,34 @@ def lvls(camera):
         'active': pg.image.load(blue_btn_active).convert_alpha(),
     }
 
+    lvls.btn_states['green'] = {
+        'normal': pg.image.load(green_btn_normal).convert_alpha(),
+        'hover': pg.image.load(green_btn_hover).convert_alpha(),
+        'active': pg.image.load(green_btn_active).convert_alpha(),
+    }
+
     def effects(self):
         self.handle_btn_clicks()
     setattr(BaseScreen, 'update', effects)
 
     return lvls
+
+def tutorial(camera):
+    tutorial = BaseScreen('Tutorial', 'black', 1)
+    tutorial.set_camera(camera)
+    tutorial.create(True)
+
+    (centerx, centery) = tutorial.screen.get_rect().center
+
+    tutorial.add_sprite(howto, (centerx, centery + 75))
+
+    create_menu_btn(tutorial)
+
+    def effects(self):
+        self.handle_btn_clicks()
+    setattr(BaseScreen, 'update', effects)
+
+    return tutorial
 
 def create_menu_btn(screen):
     screen.btn_states['red'] = {

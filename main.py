@@ -145,6 +145,11 @@ def main():
                                         else:
                                             cf.set_firerate(3, 2, 5)
                                 if director.current.name == 'Levels':
+                                    if event.type == director.events['HOW TO PLAY?_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_HOW TO PLAY?'], 1000, 1)
+                                    if event.type == director.events['FADE_IN_HOW TO PLAY?']:
+                                        director.start_screen('tutorial')
                                     if event.type == director.events['1_CLICK']:
                                         director.end_screen()
                                         pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
