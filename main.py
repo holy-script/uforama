@@ -17,7 +17,7 @@ def main():
     pg.display.set_caption('uforama!')
     window = pg.display.set_mode(cf.get_size())
     fps = cf.get_fps()
-    debug = True
+    debug = False
     font = pg.font.SysFont(None, 36)
     clock = pg.time.Clock()
     cam = BasicCamera()
