@@ -343,7 +343,7 @@ def level12(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 450, enemy_base.rect.centery + 450),
                 },
                 {
                     'type': 'yellow',
@@ -355,7 +355,7 @@ def level12(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 200),
                 },
             ]
         },
@@ -369,7 +369,7 @@ def level12(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 450, enemy_base.rect.centery + 450),
                 },
                 {
                     'type': 'yellow',
@@ -381,7 +381,7 @@ def level12(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 200),
                 },
             ]
         },
@@ -395,7 +395,7 @@ def level12(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 300, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'beige',
@@ -407,7 +407,7 @@ def level12(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 100),
                 },
             ]
         },
@@ -566,7 +566,7 @@ def level13(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 200),
                 },
             ]
         },
@@ -580,7 +580,7 @@ def level13(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 400),
                 },
                 {
                     'type': 'yellow',
@@ -592,7 +592,7 @@ def level13(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 450),
                 },
             ]
         },
@@ -606,7 +606,7 @@ def level13(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 300, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'yellow',
@@ -618,7 +618,7 @@ def level13(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 100),
                 },
             ]
         },
@@ -632,7 +632,7 @@ def level13(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 200, enemy_base.rect.centery + 200),
                 },
                 {
                     'type': 'beige',
@@ -644,12 +644,12 @@ def level13(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 150),
                 },
                 {
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
-                    'x_range': (enemy_base.rect.centerx - 50, enemy_base.rect.centerx + 400),
+                    'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 400),
                     'y_range': (enemy_base.rect.centery - 100, enemy_base.rect.centery + 250),
                 },
             ]
@@ -783,7 +783,7 @@ def level21(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 250, enemy_base.rect.centery + 250),
                 },
                 {
                     'type': 'beige',
@@ -803,7 +803,7 @@ def level21(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 400),
                 },
                 {
                     'type': 'pink',
@@ -948,7 +948,7 @@ def level22(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 200, enemy_base.rect.centery + 200),
                 },
                 {
                     'type': 'beige',
@@ -960,7 +960,7 @@ def level22(screen):
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 450),
                 },
             ]
         },
@@ -974,7 +974,7 @@ def level22(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 200, enemy_base.rect.centery + 200),
                 },
                 {
                     'type': 'blue',
@@ -986,7 +986,7 @@ def level22(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 200),
                 },
             ]
         },
@@ -1000,7 +1000,7 @@ def level22(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 250, enemy_base.rect.centery + 250),
                 },
                 {
                     'type': 'yellow',
@@ -1012,13 +1012,13 @@ def level22(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 350),
                 },
             ]
         },
@@ -1169,7 +1169,7 @@ def level23(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 250),
                 },
             ]
         },
@@ -1183,7 +1183,7 @@ def level23(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 550, enemy_base.rect.centery + 450),
                 },
                 {
                     'type': 'pink',
@@ -1201,7 +1201,7 @@ def level23(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 420),
                 },
             ]
         },
@@ -1215,13 +1215,13 @@ def level23(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 490, enemy_base.rect.centery + 290),
                 },
                 {
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 300, enemy_base.rect.centery + 290),
                 },
                 {
                     'type': 'pink',
@@ -1233,7 +1233,7 @@ def level23(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 220),
                 },
             ]
         },
@@ -1247,13 +1247,13 @@ def level23(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 490, enemy_base.rect.centery + 190),
                 },
                 {
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 390, enemy_base.rect.centery + 390),
                 },
                 {
                     'type': 'blue',
@@ -1265,7 +1265,7 @@ def level23(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 260),
                 },
                 {
                     'type': 'blue',
@@ -1411,7 +1411,7 @@ def level31(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 190, enemy_base.rect.centery + 290),
                 },
                 {
                     'type': 'pink',
@@ -1431,7 +1431,7 @@ def level31(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 290, enemy_base.rect.centery + 390),
                 },
                 {
                     'type': 'blue',
@@ -1584,13 +1584,13 @@ def level32(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 450, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 320, enemy_base.rect.centery + 230),
                 },
                 {
                     'type': 'pink',
@@ -1602,7 +1602,7 @@ def level32(screen):
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 220),
                 },
             ]
         },
@@ -1616,7 +1616,7 @@ def level32(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 560, enemy_base.rect.centery + 430),
                 },
                 {
                     'type': 'blue',
@@ -1628,7 +1628,7 @@ def level32(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 260),
                 },
                 {
                     'type': 'blue',
@@ -1648,7 +1648,7 @@ def level32(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 490, enemy_base.rect.centery + 390),
                 },
                 {
                     'type': 'yellow',
@@ -1666,19 +1666,19 @@ def level32(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 230),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery, enemy_base.rect.centery + 250),
                 },
                 {
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 260),
                 },
             ]
         },
@@ -1850,13 +1850,13 @@ def level33(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 210),
                 },
                 {
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 420),
                 },
             ]
         },
@@ -1870,7 +1870,7 @@ def level33(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 390, enemy_base.rect.centery + 290),
                 },
                 {
                     'type': 'pink',
@@ -1888,7 +1888,7 @@ def level33(screen):
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 200),
                 },
                 {
                     'type': 'blue',
@@ -1900,12 +1900,12 @@ def level33(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
-                    'x_range': (enemy_base.rect.centerx - 200, enemy_base.rect.centerx + 10),
+                    'x_range': (enemy_base.rect.centerx - 200, enemy_base.rect.centerx + 450),
                     'y_range': (enemy_base.rect.centery - 100, enemy_base.rect.centery + 300),
                 },
             ]
@@ -1920,13 +1920,13 @@ def level33(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 490, enemy_base.rect.centery + 490),
                 },
                 {
                     'type': 'yellow',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 390, enemy_base.rect.centery + 190),
                 },
                 {
                     'type': 'pink',
@@ -1938,13 +1938,13 @@ def level33(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 345),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
-                    'x_range': (enemy_base.rect.centerx - 90, enemy_base.rect.centerx + 10),
-                    'y_range': (enemy_base.rect.centery - 40, enemy_base.rect.centery + 200),
+                    'x_range': (enemy_base.rect.centerx - 290, enemy_base.rect.centerx + 310),
+                    'y_range': (enemy_base.rect.centery - 440, enemy_base.rect.centery + 200),
                 },
                 {
                     'type': 'pink',
@@ -1964,13 +1964,13 @@ def level33(screen):
                     'type': 'pink',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 290, enemy_base.rect.centery + 490),
                 },
                 {
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 250),
-                    'y_range': (enemy_base.rect.centery - 90, enemy_base.rect.centery + 90),
+                    'y_range': (enemy_base.rect.centery - 390, enemy_base.rect.centery + 300),
                 },
                 {
                     'type': 'blue',
@@ -1988,12 +1988,12 @@ def level33(screen):
                     'type': 'beige',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
                     'x_range': (enemy_base.rect.centerx - 400, enemy_base.rect.centerx + 100),
-                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 20),
+                    'y_range': (enemy_base.rect.centery - 400, enemy_base.rect.centery + 320),
                 },
                 {
                     'type': 'blue',
                     'spawn': (layer1.rect.centerx, enemy_base.rect.centery + 50),
-                    'x_range': (enemy_base.rect.centerx - 50, enemy_base.rect.centerx + 400),
+                    'x_range': (enemy_base.rect.centerx - 250, enemy_base.rect.centerx + 400),
                     'y_range': (enemy_base.rect.centery - 100, enemy_base.rect.centery + 250),
                 },
                 {

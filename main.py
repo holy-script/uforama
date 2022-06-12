@@ -110,7 +110,7 @@ def main():
                                     if event.type == director.events['SHIELD_END']:
                                         cf.set_dmg_enemies(10, 4, 12)
                                     if event.type == director.events['SLOW']:
-                                        cf.set_speed_enemies((2, 1), (1.2, 1.2), (0.8, 1.6))
+                                        cf.set_speed_enemies((2, 1), (1, 1), (1, 1))
                                         [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
                                         pg.time.set_timer(director.events['SLOW_END'], 5000, 1)
                                     if event.type == director.events['SLOW_END']:
