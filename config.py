@@ -25,11 +25,16 @@ config = {
         "yellow": 'sfx_yellow.wav',
         "beige": 'sfx_beige.wav',
         "pink": 'sfx_pink.wav',
-    }
+    },
+    "mute": False,
 }
 
 def get_size():
     return (config['width'], config['height'])
+
+def set_size(width, height):
+    config['width'] = width
+    config['height'] = height
 
 def get_fps():
     return config['fps']
@@ -59,5 +64,16 @@ def set_speed_enemies(yellow, beige, pink):
 def get_firerate(type):
     return config['firerate'][type]
 
+def set_firerate(yellow, beige, pink):
+    config['firerate']['yellow'] = yellow
+    config['firerate']['beige'] = beige
+    config['firerate']['pink'] = pink
+
 def get_sound(type):
     return config['sound'][type]
+
+def get_mute():
+    return config['mute']
+
+def set_mute(value):
+    config['mute'] = value

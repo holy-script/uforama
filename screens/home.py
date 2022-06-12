@@ -12,6 +12,9 @@ red_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'red_bt
 blue_btn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_normal.png')
 blue_btn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_hover.png')
 blue_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_btn_active.png')
+blue_lbtn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_normal.png')
+blue_lbtn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_hover.png')
+blue_lbtn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'blue_lbtn_active.png')
 
 def menu(camera):
     menu = BaseScreen('Menu', 'black', 1.5)
@@ -76,6 +79,18 @@ def options(camera):
     options.create(True)
 
     create_menu_btn(options)
+
+    (centerx, centery) = options.screen.get_rect().center
+
+    options.create_btn('MUTE SOUNDS', 36, 'black', centerx, centery - 54, blue_lbtn_normal, 'blue')
+    options.create_btn('RESIZE HD/SD', 36, 'black', centerx, centery + 18, blue_lbtn_normal, 'blue')
+    options.create_btn('EASY/HARD', 36, 'black', centerx, centery + 90, blue_lbtn_normal, 'blue')
+
+    options.btn_states['blue'] = {
+        'normal': pg.image.load(blue_lbtn_normal).convert_alpha(),
+        'hover': pg.image.load(blue_lbtn_hover).convert_alpha(),
+        'active': pg.image.load(blue_lbtn_active).convert_alpha(),
+    }
 
     def effects(self):
         self.handle_btn_clicks()

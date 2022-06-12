@@ -240,3 +240,16 @@ def level1(screen):
         enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
     
     return controls
+
+# def level2(screen):
+#     enemy_patrol = EnemySprite(
+#         screen, 
+#         (layer1.rect.centerx, 357), 
+#         'yellow', 
+#         (enemy_base.rect.centerx - 700, enemy_base.rect.centerx + 700), 
+#         (enemy_base.rect.centery - 100, enemy_base.rect.centery + 100), 
+#     )
+#     def controls(self):
+#         enemy_patrol.rect.centery = enemy_base.rect.top + 268 - enemy_patrol.rect.height / 2
+
+#     return controls
