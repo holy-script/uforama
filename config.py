@@ -20,6 +20,11 @@ config = {
         "beige": 2,
         "pink": 5,
         "blue": -1,
+    },
+    "sound": {
+        "yellow": 'sfx_yellow.wav',
+        "beige": 'sfx_beige.wav',
+        "pink": 'sfx_pink.wav',
     }
 }
 
@@ -53,3 +58,6 @@ def set_speed_enemies(yellow, beige, pink):
 
 def get_firerate(type):
     return config['firerate'][type]
+
+def get_sound(type):
+    return config['sound'][type]

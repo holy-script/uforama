@@ -4,6 +4,9 @@ import math
 import os
 import config as cf
 import random
+from pygame import mixer as mx
+mx.init()
+mx.set_num_channels(10)
 
 class GameSprite(pg.sprite.Sprite):
     def __init__(self, src, screen, point, pos, sticky, btn=False):
@@ -53,6 +56,9 @@ class BulletSprite(pg.sprite.Sprite):
 
     def hit(self, sprite):
         sprite.health -= self.damage
+        hit = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', 'sfx_hit.wav'))
+        hit.set_volume(0.2)
+        mx.Channel(5).play(hit)
 
     def update(self):
         self.pos += self.direction
@@ -171,8 +177,14 @@ class PlayerSprite(pg.sprite.Sprite):
                     -self.radius * math.sin(math.radians(self.angle))
                 )
                 if not self.use_rocket:
+                    blt = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', 'sfx_laser_bullet.wav'))
+                    blt.set_volume(0.1)
+                    mx.Channel(0).play(blt)
                     BulletSprite(self.bullet, self.screen, self.gun.rect.center + circ, "center", self, 25)
                 else:
+                    blt = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', 'sfx_rocket_bullet.wav'))
+                    blt.set_volume(0.2)
+                    mx.Channel(1).play(blt)
                     BulletSprite(self.rocket, self.screen, self.gun.rect.center + circ, "center", self, 50)
                 self.shooting = True
         else:
@@ -256,14 +268,17 @@ powerups = {
     'shield': {
         'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_shield.png'),
         'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['SHIELD'])),
+        'sound': 'sfx_shield.wav',
     },
     'rocket': {
         'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_rocket.png'),
         'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['ROCKET'])),
+        'sound': 'sfx_rocket.wav',
     },
     'slow': {
         'src': os.path.join(os.path.dirname(__file__), '..', 'assets', 'power_slow.png'),
         'effect': lambda screen: pg.event.post(pg.event.Event(screen.triggers['SLOW'])),
+        'sound': 'sfx_slow.wav',
     },
 }
 
@@ -299,6 +314,9 @@ class EnemySprite(pg.sprite.Sprite):
             self.radius * math.cos(math.radians(self.angle)),
             -self.radius * math.sin(math.radians(self.angle))
         )
+        blt = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', cf.get_sound(self.type)))
+        blt.set_volume(0.1)
+        mx.Channel(2).play(blt)
         enemies[self.type]['create'](enemies[self.type]['shoot'], self.screen, gun.rect.center + circ, "center", self, cf.get_dmg(self.type))
     
     def set_speed(self, speed):
@@ -362,6 +380,9 @@ class PoofSprite(pg.sprite.Sprite):
         self.image = self.frames[0]
         self.rect = self.frames[0].get_rect(center=self.point)
         self.add(self.screen.camera)
+        poof = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', 'sfx_poof.wav'))
+        poof.set_volume(0.2)
+        mx.Channel(3).play(poof)
     
     def update(self):
         self.image = self.frames[0]
@@ -404,6 +425,9 @@ class BoomSprite(pg.sprite.Sprite):
         self.image = self.frames[0]
         self.rect = self.frames[0].get_rect(center=self.point)
         self.add(self.screen.camera)
+        boom = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', 'sfx_boom.wav'))
+        boom.set_volume(0.2)
+        mx.Channel(4).play(boom)
     
     def update(self):
         self.image = self.frames[0]
@@ -444,6 +468,9 @@ class PowerupSprite(pg.sprite.Sprite):
         return round(rightMin + (valueScaled * rightSpan))
 
     def add_health(self, player):
+        powerup = mx.Sound(os.path.join(os.path.dirname(__file__), '..', 'assets', powerups[self.type]['sound']))
+        powerup.set_volume(0.2)
+        mx.Channel(8).play(powerup)
         player.health += 10
         if player.health > 100:
             player.health = 100

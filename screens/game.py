@@ -199,9 +199,10 @@ def level1(screen):
                     ]
                     self.wave_points.pop(0)
         else:
-            if not self.enemy_group.sprites() and self.base_down:
+            if not self.enemy_group.sprites():
                 flag_mark.point = pg.math.Vector2(screen.camera.half_width + track.width / 2, screen.camera.half_height * 2 - 20)
-                pg.event.post(pg.event.Event(self.triggers['WINNER']))
+                if self.base_down:
+                    pg.event.post(pg.event.Event(self.triggers['WINNER']))
         
 
         hv.crop_area = hv.image.get_rect(width=screen.translate(player.health, 0, 100, 0, hv.width))

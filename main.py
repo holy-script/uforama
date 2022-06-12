@@ -4,9 +4,16 @@ import sys
 import config as cf
 from classes.camera import BasicCamera
 from classes.director import Director
+from pygame import mixer as mx
+import os
 
 pg.init()
-pg.display.set_caption('Hello, World!')
+mx.init()
+mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'main_track.wav'))
+mx.music.set_volume(0.3)
+mx.music.play(-1)
+mx.set_num_channels(10)
+pg.display.set_caption('uforama!')
 window = pg.display.set_mode(cf.get_size())
 fps = cf.get_fps()
 debug = True
@@ -17,6 +24,7 @@ director = Director(clock, cam)
 director.startup()
 
 def terminate():
+    mx.music.unload()
     pg.quit()
     sys.exit()
 
@@ -42,6 +50,11 @@ def main():
             if director.current:
                 if director.current.dynamic:
                     if director.current.evts_added:
+                        if director.current.name != 'Play':
+                            if pg.mouse.get_pressed()[0]:
+                                click = mx.Sound(os.path.join(os.path.dirname(__file__), 'assets', 'sfx_click.wav'))
+                                click.set_volume(0.2)
+                                mx.Channel(9).play(click)
                         if director.current.name == 'Menu':
                             if event.type == director.events['START!_CLICK']:
                                 director.end_screen()
@@ -66,27 +79,33 @@ def main():
                                 cam.follow_player = True
                                 if director.current.evts_added:
                                     if event.type == director.events['LOSER']:
+                                        lose = mx.Sound(os.path.join(os.path.dirname(__file__), 'assets', 'sfx_lose.wav'))
+                                        lose.set_volume(0.2)
+                                        mx.Channel(6).play(lose)
                                         director.end_screen()
                                         pg.time.set_timer(director.events['FADE_IN_LOSE'], 1000, 1)
                                     if event.type == director.events['WINNER']:
+                                        win = mx.Sound(os.path.join(os.path.dirname(__file__), 'assets', 'sfx_win.wav'))
+                                        win.set_volume(0.2)
+                                        mx.Channel(7).play(win)
                                         director.end_screen()
                                         pg.time.set_timer(director.events['FADE_IN_WIN'], 1000, 1)
                                     if event.type == director.events['ROCKET']:
                                         cf.set_player_gun_z(1.5)
                                         [player.toggle_rocket(True) for player in director.current.player_group]
-                                        pg.time.set_timer(director.events['ROCKET_END'], 10000, 1)
+                                        pg.time.set_timer(director.events['ROCKET_END'], 5000, 1)
                                     if event.type == director.events['ROCKET_END']:
                                         cf.set_player_gun_z(1)
                                         [player.toggle_rocket(False) for player in director.current.player_group]
                                     if event.type == director.events['SHIELD']:
                                         cf.set_dmg_enemies(0, 0, 0)
-                                        pg.time.set_timer(director.events['SHIELD_END'], 10000, 1)
+                                        pg.time.set_timer(director.events['SHIELD_END'], 5000, 1)
                                     if event.type == director.events['SHIELD_END']:
                                         cf.set_dmg_enemies(10, 4, 12)
                                     if event.type == director.events['SLOW']:
                                         cf.set_speed_enemies((2, 1), (1.2, 1.2), (0.8, 1.6))
                                         [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
-                                        pg.time.set_timer(director.events['SLOW_END'], 10000, 1)
+                                        pg.time.set_timer(director.events['SLOW_END'], 5000, 1)
                                     if event.type == director.events['SLOW_END']:
                                         cf.set_speed_enemies((10, 5), (6, 6), (4, 8))
                                         [enemy.set_speed(cf.get_speed(enemy.type)) for enemy in director.current.enemy_group]
@@ -105,10 +124,18 @@ def main():
                                         director.end_screen()
                                         pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
                                         cam.set_crosshair()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3)
+                                        mx.music.play(-1)
                                     if event.type == director.events['FADE_IN_1']:
                                         director.start_screen('play', 1)
                 else:
                     if director.current.name == 'Win' or director.current.name == 'Lose':
+                        mx.music.unload()
+                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'main_track.wav'))
+                        mx.music.set_volume(0.3)
+                        mx.music.play(-1)
                         if event.type == director.events['FADE_OUT_LOSE']:
                             cam.set_pointer()
                             director.end_screen()
