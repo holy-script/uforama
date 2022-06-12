@@ -177,6 +177,17 @@ def main():
                                         mx.music.play(-1)
                                     if event.type == director.events['FADE_IN_2']:
                                         director.start_screen('play', 2)
+                                    if event.type == director.events['3_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_3'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_3']:
+                                        director.start_screen('play', 3)
                 else:
                     if director.current.name == 'Win' or director.current.name == 'Lose':
                         mx.music.stop()
