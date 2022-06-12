@@ -19,6 +19,7 @@ green_btn_normal = os.path.join(os.path.dirname(__file__), '..', 'assets', 'gree
 green_btn_hover = os.path.join(os.path.dirname(__file__), '..', 'assets', 'green_btn_hover.png')
 green_btn_active = os.path.join(os.path.dirname(__file__), '..', 'assets', 'green_btn_active.png')
 howto = os.path.join(os.path.dirname(__file__), '..', 'assets', 'howto.png')
+objective = os.path.join(os.path.dirname(__file__), '..', 'assets', 'objective.png')
 
 def menu(camera):
     menu = BaseScreen('Menu', 'black', 1.5)
@@ -121,11 +122,13 @@ def lvls(camera):
 
     create_menu_btn(lvls)
     (x, y) = lvls.screen.get_rect().midtop
-    lvls.create_btn('HOW TO PLAY?', 36, 'black', x, y + 54, green_btn_normal, 'green')
+    lvls.create_btn('HOW TO PLAY?', 34, 'black', x, y + 51, green_btn_normal, 'green')
+    lvls.create_btn('OBJECTIVES', 34, 'black', x, y + 119, green_btn_normal, 'green')
 
     (centerx, centery) = lvls.screen.get_rect().center
 
-    lvls.create_btn('1', 36, 'black', centerx, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('1', 36, 'black', centerx - 54, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('2', 36, 'black', centerx + 18, centery, blue_btn_normal, 'blue')
 
     lvls.btn_states['blue'] = {
         'normal': pg.image.load(blue_btn_normal).convert_alpha(),
@@ -161,6 +164,23 @@ def tutorial(camera):
     setattr(BaseScreen, 'update', effects)
 
     return tutorial
+
+def objectives(camera):
+    objectives = BaseScreen('Objectives', 'black', 1)
+    objectives.set_camera(camera)
+    objectives.create(True)
+
+    (centerx, centery) = objectives.screen.get_rect().center
+
+    objectives.add_sprite(objective, (centerx, centery))
+
+    create_menu_btn(objectives)
+
+    def effects(self):
+        self.handle_btn_clicks()
+    setattr(BaseScreen, 'update', effects)
+
+    return objectives
 
 def create_menu_btn(screen):
     screen.btn_states['red'] = {

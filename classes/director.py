@@ -27,6 +27,7 @@ class Director:
             "win": splash.win,
             "lose": splash.lose,
             "tutorial": home.tutorial,
+            "objectives": home.objectives,
         }
         self.current = None
 
