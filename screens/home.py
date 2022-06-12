@@ -127,9 +127,15 @@ def lvls(camera):
 
     (centerx, centery) = lvls.screen.get_rect().center
 
-    lvls.create_btn('1', 36, 'black', centerx - 72, centery, blue_btn_normal, 'blue')
-    lvls.create_btn('2', 36, 'black', centerx, centery, blue_btn_normal, 'blue')
-    lvls.create_btn('3', 36, 'black', centerx + 72, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('1.1', 36, 'black', centerx - 72, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('1.2', 36, 'black', centerx, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('1.3', 36, 'black', centerx + 72, centery, blue_btn_normal, 'blue')
+    lvls.create_btn('2.1', 36, 'black', centerx - 72, centery + 72, blue_btn_normal, 'blue')
+    lvls.create_btn('2.2', 36, 'black', centerx, centery + 72, blue_btn_normal, 'blue')
+    lvls.create_btn('2.3', 36, 'black', centerx + 72, centery + 72, blue_btn_normal, 'blue')
+    lvls.create_btn('3.1', 36, 'black', centerx - 72, centery + 144, blue_btn_normal, 'blue')
+    lvls.create_btn('3.2', 36, 'black', centerx, centery + 144, blue_btn_normal, 'blue')
+    lvls.create_btn('3.3', 36, 'black', centerx + 72, centery + 144, blue_btn_normal, 'blue')
 
     lvls.btn_states['blue'] = {
         'normal': pg.image.load(blue_btn_normal).convert_alpha(),

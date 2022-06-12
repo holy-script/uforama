@@ -155,39 +155,105 @@ def main():
                                         pg.time.set_timer(director.events['FADE_IN_OBJECTIVES'], 1000, 1)
                                     if event.type == director.events['FADE_IN_OBJECTIVES']:
                                         director.start_screen('objectives')
-                                    if event.type == director.events['1_CLICK']:
+                                    if event.type == director.events['1.1_CLICK']:
                                         director.end_screen()
-                                        pg.time.set_timer(director.events['FADE_IN_1'], 1000, 1)
+                                        pg.time.set_timer(director.events['FADE_IN_1.1'], 1000, 1)
                                         cam.set_crosshair()
                                         mx.music.stop()
                                         mx.music.unload()
                                         mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
                                         mx.music.set_volume(0.3 if not cf.get_mute() else 0)
                                         mx.music.play(-1)
-                                    if event.type == director.events['FADE_IN_1']:
-                                        director.start_screen('play', 1)
-                                    if event.type == director.events['2_CLICK']:
+                                    if event.type == director.events['FADE_IN_1.1']:
+                                        director.start_screen('play', '1.1')
+                                    if event.type == director.events['1.2_CLICK']:
                                         director.end_screen()
-                                        pg.time.set_timer(director.events['FADE_IN_2'], 1000, 1)
+                                        pg.time.set_timer(director.events['FADE_IN_1.2'], 1000, 1)
                                         cam.set_crosshair()
                                         mx.music.stop()
                                         mx.music.unload()
                                         mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
                                         mx.music.set_volume(0.3 if not cf.get_mute() else 0)
                                         mx.music.play(-1)
-                                    if event.type == director.events['FADE_IN_2']:
-                                        director.start_screen('play', 2)
-                                    if event.type == director.events['3_CLICK']:
+                                    if event.type == director.events['FADE_IN_1.2']:
+                                        director.start_screen('play', '1.2')
+                                    if event.type == director.events['1.3_CLICK']:
                                         director.end_screen()
-                                        pg.time.set_timer(director.events['FADE_IN_3'], 1000, 1)
+                                        pg.time.set_timer(director.events['FADE_IN_1.3'], 1000, 1)
                                         cam.set_crosshair()
                                         mx.music.stop()
                                         mx.music.unload()
                                         mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
                                         mx.music.set_volume(0.3 if not cf.get_mute() else 0)
                                         mx.music.play(-1)
-                                    if event.type == director.events['FADE_IN_3']:
-                                        director.start_screen('play', 3)
+                                    if event.type == director.events['FADE_IN_1.3']:
+                                        director.start_screen('play', '1.3')
+                                    if event.type == director.events['2.1_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_2.1'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_2.1']:
+                                        director.start_screen('play', '2.1')
+                                    if event.type == director.events['2.2_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_2.2'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_2.2']:
+                                        director.start_screen('play', '2.2')
+                                    if event.type == director.events['2.3_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_2.3'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_2.3']:
+                                        director.start_screen('play', '2.3')
+                                    if event.type == director.events['3.1_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_3.1'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_3.1']:
+                                        director.start_screen('play', '3.1')
+                                    if event.type == director.events['3.2_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_3.2'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_3.2']:
+                                        director.start_screen('play', '3.2')
+                                    if event.type == director.events['3.3_CLICK']:
+                                        director.end_screen()
+                                        pg.time.set_timer(director.events['FADE_IN_3.3'], 1000, 1)
+                                        cam.set_crosshair()
+                                        mx.music.stop()
+                                        mx.music.unload()
+                                        mx.music.load(os.path.join(os.path.dirname(__file__), 'assets', 'fight_track.wav'))
+                                        mx.music.set_volume(0.3 if not cf.get_mute() else 0)
+                                        mx.music.play(-1)
+                                    if event.type == director.events['FADE_IN_3.3']:
+                                        director.start_screen('play', '3.3')
                 else:
                     if director.current.name == 'Win' or director.current.name == 'Lose':
                         mx.music.stop()
